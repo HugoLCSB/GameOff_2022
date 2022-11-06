@@ -6,6 +6,7 @@ using UnityEngine.Events;
 public class CharacterMovement : MonoBehaviour
 {
     [SerializeField] private CharacterController2D controller;
+    [SerializeField] private Transform hand;
     [SerializeField] private string deathLayerName;
     [SerializeField] private float runSpeed = 30;
     [SerializeField] private float jumpDelay = 0.5f;
@@ -36,6 +37,7 @@ public class CharacterMovement : MonoBehaviour
     void Update()
     {
         InputManager();
+        RotationToMousePos(hand);
     }
 
     void FixedUpdate()
@@ -77,5 +79,28 @@ public class CharacterMovement : MonoBehaviour
         isJumping = true;
         yield return new WaitForSeconds(time);
         isJumping = false;
+    }
+
+    private void RotationToMousePos(Transform objectToRotate){
+        //Get the Screen positions of the object
+        Vector2 positionOnScreen = Camera.main.WorldToViewportPoint (objectToRotate.position);
+         
+        //Get the Screen position of the mouse
+        Vector2 mouseOnScreen = (Vector2)Camera.main.ScreenToViewportPoint(Input.mousePosition);
+         
+        //Get the angle between the points
+        float angle = AngleBetweenTwoPoints(positionOnScreen, mouseOnScreen);
+ 
+        //Ta Daaa
+        if(transform.localScale.x < 0){
+            objectToRotate.rotation =  Quaternion.Euler (new Vector3(0f,0f,angle));
+        }
+        else{
+            objectToRotate.rotation =  Quaternion.Euler (new Vector3(0f,0f,angle-180));
+        }
+ 
+        float AngleBetweenTwoPoints(Vector3 a, Vector3 b) {
+            return Mathf.Atan2(a.y - b.y, a.x - b.x) * Mathf.Rad2Deg;
+        }
     }
 }
