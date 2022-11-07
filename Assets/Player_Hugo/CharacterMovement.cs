@@ -7,15 +7,21 @@ public class CharacterMovement : MonoBehaviour
 {
     [SerializeField] private CharacterController2D controller;
     [SerializeField] private Transform hand;
+    [SerializeField] private Transform firePoint;
+    [SerializeField] private GameObject bullet;
     [SerializeField] private string deathLayerName;
     [SerializeField] private float runSpeed = 30;
-    [SerializeField] private float jumpDelay = 0.5f;
+    [SerializeField] private float jumpDelay = 0.4f;
+    [SerializeField] private float fireKnockBack = 5;
+    [SerializeField] private float bulletSpeed = 5;
+    [SerializeField] private float fireCoolDown = 0.5f;
 
     public UnityEvent DeathEvent;
 
     private float horizontalMove;
     private bool jump = false;
     private bool isJumping = false;
+    private bool isShooting = false;
     private bool grounded = false;
     private Rigidbody2D rb;
 
@@ -42,7 +48,9 @@ public class CharacterMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        controller.Move(horizontalMove * runSpeed * Time.fixedDeltaTime, false, jump);
+        if(horizontalMove != 0 || jump){
+            controller.Move(horizontalMove * runSpeed * Time.fixedDeltaTime, false, jump);
+        }
         jump = false;
     }
 
@@ -61,7 +69,7 @@ public class CharacterMovement : MonoBehaviour
         if (Input.GetButtonDown("Jump") && !isJumping)
         {
             jump = true;
-            StartCoroutine(waitNextJump(jumpDelay));
+            StartCoroutine(waitJump(jumpDelay));
         }
 
         if (Input.GetButtonUp("Jump"))
@@ -73,22 +81,38 @@ public class CharacterMovement : MonoBehaviour
                 rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
             }
         }
+
+        if(!isShooting){
+           if(Input.GetButton("Fire1")){
+                Shoot();
+                StartCoroutine(waitShoot(fireCoolDown));
+            }
+        }
     }
 
-    private IEnumerator waitNextJump(float time){
+    private IEnumerator waitJump(float time){
         isJumping = true;
         yield return new WaitForSeconds(time);
         isJumping = false;
     }
 
+    private IEnumerator waitShoot(float time){
+        isShooting = true;
+        yield return new WaitForSeconds(time);
+        isShooting = false;
+    }
+
     private void RotationToMousePos(Transform objectToRotate){
         //Get the Screen positions of the object
         Vector2 positionOnScreen = Camera.main.WorldToViewportPoint (objectToRotate.position);
-         
         //Get the Screen position of the mouse
         Vector2 mouseOnScreen = (Vector2)Camera.main.ScreenToViewportPoint(Input.mousePosition);
          
         //Get the angle between the points
+        float AngleBetweenTwoPoints(Vector3 a, Vector3 b) {
+            return Mathf.Atan2(a.y - b.y, a.x - b.x) * Mathf.Rad2Deg;
+        }
+        
         float angle = AngleBetweenTwoPoints(positionOnScreen, mouseOnScreen);
  
         //Ta Daaa
@@ -98,9 +122,21 @@ public class CharacterMovement : MonoBehaviour
         else{
             objectToRotate.rotation =  Quaternion.Euler (new Vector3(0f,0f,angle-180));
         }
- 
-        float AngleBetweenTwoPoints(Vector3 a, Vector3 b) {
-            return Mathf.Atan2(a.y - b.y, a.x - b.x) * Mathf.Rad2Deg;
-        }
+    }
+
+    private void Shoot(){
+        //Get the Screen positions of the object
+        Vector2 positionOnScreen = Camera.main.WorldToViewportPoint (transform.position);
+        //Get the Screen position of the mouse
+        Vector2 mouseOnScreen = (Vector2)Camera.main.ScreenToViewportPoint(Input.mousePosition);
+
+        //adding velocity according to the direction from mouse to player (kockback on player)
+        rb.velocity = (new Vector2(positionOnScreen.x - mouseOnScreen.x,
+            positionOnScreen.y - mouseOnScreen.y).normalized * fireKnockBack);
+
+        //creating bullets at the firePoint and adding velocity to them
+        GameObject shotInstance =  Instantiate(bullet, firePoint.position, transform.rotation);
+        shotInstance.GetComponent<Rigidbody2D>().velocity = (new Vector2(mouseOnScreen.x - positionOnScreen.x,
+            mouseOnScreen.y - positionOnScreen.y).normalized * bulletSpeed);
     }
 }
