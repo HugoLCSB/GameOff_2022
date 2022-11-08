@@ -15,6 +15,7 @@ public class CharacterMovement : MonoBehaviour
     [SerializeField] private float fireKnockBack = 5;
     [SerializeField] private float bulletSpeed = 5;
     [SerializeField] private float fireCoolDown = 0.5f;
+    [SerializeField] private bool canJump = true;
 
     public UnityEvent DeathEvent;
 
@@ -66,19 +67,21 @@ public class CharacterMovement : MonoBehaviour
     {
         horizontalMove = Input.GetAxisRaw("Horizontal");
 
-        if (Input.GetButtonDown("Jump") && !isJumping)
-        {
-            jump = true;
-            StartCoroutine(waitJump(jumpDelay));
-        }
+        if(canJump){
+            if (Input.GetButtonDown("Jump") && !isJumping)
+            {
+                jump = true;
+                StartCoroutine(waitJump(jumpDelay));
+            }
 
-        if (Input.GetButtonUp("Jump"))
-        {
-            jump = false;
+            if (Input.GetButtonUp("Jump"))
+            {
+                jump = false;
 
-            if(rb.velocity.y > 0){
-                //fall down quicker when jump key not held
-                rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
+                if(rb.velocity.y > 0){
+                    //fall down quicker when jump key not held
+                    rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
+                }
             }
         }
 
