@@ -405,6 +405,7 @@ MonoBehaviour:
   fireKnockBack: 12
   cannonPower: 60000
   fireCoolDown: 0.1
+  fallDownForce: 5
   canJump: 0
   DeathEvent:
     m_PersistentCalls:

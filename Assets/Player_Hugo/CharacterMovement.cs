@@ -10,12 +10,13 @@ public class CharacterMovement : MonoBehaviour
     [SerializeField] private Transform firePoint;
     [SerializeField] private GameObject bullet;
     [SerializeField] private string deathLayerName;
-    [SerializeField] private float runSpeed = 30;
-    [SerializeField] private float jumpDelay = 0.4f;
-    [SerializeField] private float fireKnockBack = 5;
-    [SerializeField] private float cannonPower = 5;
-    [SerializeField] private float fireCoolDown = 0.5f;
-    [SerializeField] private bool canJump = true;
+    [SerializeField] private float runSpeed = 30;   //speed of the player
+    [SerializeField] private float jumpDelay = 0.4f;    //cool down time between jumps
+    [SerializeField] private float cannonRecoil = 12;   //KockBack received by the player after shooting
+    [SerializeField] private float cannonPower = 5; //Power of the cannon shots
+    [SerializeField] private float fireCoolDown = 0.5f; //Cool down time between each shot
+    [SerializeField] private float fallDownForce = 5;   //Force applied when player clicks down, to reach the floor quicker 
+    [SerializeField] private bool canJump = true;   //whether or not the player can jump
 
     public UnityEvent DeathEvent;
 
@@ -68,21 +69,7 @@ public class CharacterMovement : MonoBehaviour
         horizontalMove = Input.GetAxisRaw("Horizontal");
 
         if(canJump){
-            if (Input.GetButtonDown("Jump") && !isJumping)
-            {
-                jump = true;
-                StartCoroutine(waitJump(jumpDelay));
-            }
-
-            if (Input.GetButtonUp("Jump"))
-            {
-                jump = false;
-
-                if(rb.velocity.y > 0){
-                    //fall down quicker when jump key not held
-                    rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
-                }
-            }
+            doJump();
         }
 
         if(!isShooting){
@@ -91,18 +78,33 @@ public class CharacterMovement : MonoBehaviour
                 StartCoroutine(waitShoot(fireCoolDown));
             }
         }
+
+        if(Input.GetAxisRaw("Vertical") < 0 && fallDownForce > 0){
+            rb.AddForce(Vector2.down * fallDownForce);
+        }
     }
 
+    private void doJump(){
+        if (Input.GetButtonDown("Jump") && !isJumping)
+        {
+            jump = true;
+            StartCoroutine(waitJump(jumpDelay));
+        }
+
+        if (Input.GetButtonUp("Jump"))
+        {
+            jump = false;
+
+            if(rb.velocity.y > 0){
+                //fall down quicker when jump key not held
+                rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
+            }
+        }
+    }
     private IEnumerator waitJump(float time){
         isJumping = true;
         yield return new WaitForSeconds(time);
         isJumping = false;
-    }
-
-    private IEnumerator waitShoot(float time){
-        isShooting = true;
-        yield return new WaitForSeconds(time);
-        isShooting = false;
     }
 
     private void RotationToMousePos(Transform objectToRotate){
@@ -135,11 +137,16 @@ public class CharacterMovement : MonoBehaviour
 
         //adding velocity according to the direction from mouse to player (kockback on player)
         rb.velocity = (new Vector2(positionOnScreen.x - mouseOnScreen.x,
-            positionOnScreen.y - mouseOnScreen.y).normalized * fireKnockBack);
+            positionOnScreen.y - mouseOnScreen.y).normalized * cannonRecoil);
 
         //creating bullets at the firePoint and adding velocity to them
         GameObject shotInstance =  Instantiate(bullet, firePoint.position, transform.rotation);
         shotInstance.GetComponent<Rigidbody2D>().AddForce(new Vector2(mouseOnScreen.x - positionOnScreen.x,
             mouseOnScreen.y - positionOnScreen.y).normalized * cannonPower);
+    }
+    private IEnumerator waitShoot(float time){
+        isShooting = true;
+        yield return new WaitForSeconds(time);
+        isShooting = false;
     }
 }
