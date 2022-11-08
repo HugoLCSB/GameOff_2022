@@ -49,7 +49,7 @@ public class CharacterMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if(horizontalMove != 0 || jump){
+        if((horizontalMove != 0 || jump) && !isShooting){
             controller.Move(horizontalMove * runSpeed * Time.fixedDeltaTime, false, jump);
         }
         jump = false;
