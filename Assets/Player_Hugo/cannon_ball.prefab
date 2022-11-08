@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -6790018573494483176}
   - component: {fileID: -6535786942021055792}
   m_Layer: 0
-  m_Name: bullet
+  m_Name: cannon_ball
   m_TagString: bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -117,7 +117,7 @@ CircleCollider2D:
   m_GameObject: {fileID: 8310871646499747182}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 5782dbc8cbb86ca44b62420dbe610e28, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
