@@ -403,7 +403,7 @@ MonoBehaviour:
   runSpeed: 35
   jumpDelay: 0.4
   fireKnockBack: 12
-  bulletSpeed: 20
+  cannonPower: 60000
   fireCoolDown: 0.1
   canJump: 0
   DeathEvent:

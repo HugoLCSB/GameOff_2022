@@ -13,7 +13,7 @@ public class CharacterMovement : MonoBehaviour
     [SerializeField] private float runSpeed = 30;
     [SerializeField] private float jumpDelay = 0.4f;
     [SerializeField] private float fireKnockBack = 5;
-    [SerializeField] private float bulletSpeed = 5;
+    [SerializeField] private float cannonPower = 5;
     [SerializeField] private float fireCoolDown = 0.5f;
     [SerializeField] private bool canJump = true;
 
@@ -115,7 +115,7 @@ public class CharacterMovement : MonoBehaviour
         float AngleBetweenTwoPoints(Vector3 a, Vector3 b) {
             return Mathf.Atan2(a.y - b.y, a.x - b.x) * Mathf.Rad2Deg;
         }
-        
+
         float angle = AngleBetweenTwoPoints(positionOnScreen, mouseOnScreen);
  
         //Ta Daaa
@@ -139,7 +139,7 @@ public class CharacterMovement : MonoBehaviour
 
         //creating bullets at the firePoint and adding velocity to them
         GameObject shotInstance =  Instantiate(bullet, firePoint.position, transform.rotation);
-        shotInstance.GetComponent<Rigidbody2D>().velocity = (new Vector2(mouseOnScreen.x - positionOnScreen.x,
-            mouseOnScreen.y - positionOnScreen.y).normalized * bulletSpeed);
+        shotInstance.GetComponent<Rigidbody2D>().AddForce(new Vector2(mouseOnScreen.x - positionOnScreen.x,
+            mouseOnScreen.y - positionOnScreen.y).normalized * cannonPower);
     }
 }
