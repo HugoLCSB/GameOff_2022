@@ -10,6 +10,7 @@ public class CameraController : MonoBehaviour
     [SerializeField] private bool takeChildrenIntoAccount = true;
 
     [SerializeField] private Vector2 limits;
+    [SerializeField] private Vector2 offset;
     private Vector3 sum;
 
     private void FixedUpdate()
@@ -23,6 +24,7 @@ public class CameraController : MonoBehaviour
                 sum += target.gameObject.transform.position;
             }
             sum = sum / (container.childCount + 1);
+            //sum = new Vector2(sum.x + offset.x, sum.y + offset.y);//accounting for offset
 
             //Bias the camera
             //Vector3 biased = new Vector3(sum.x, sum.y, sum.z);
@@ -34,8 +36,8 @@ public class CameraController : MonoBehaviour
             //}
         }
         else{
-            //Get the goal
-            sum = container.position;
+            //Get the goal accounting for offset
+            sum = new Vector2(container.position.x + offset.x, container.position.y + offset.y);
         }
 
         //Keep it in the limits
