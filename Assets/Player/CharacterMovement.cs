@@ -24,6 +24,7 @@ public class CharacterMovement : MonoBehaviour
 
     private float horizontalMove;
     private float variableFireRate;
+    private float localScaleX;
     private bool jump = false;
     private bool isJumping = false;
     private bool isShooting = false;
@@ -35,6 +36,7 @@ public class CharacterMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         variableFireRate = fireRate;
+        localScaleX = transform.localScale.x;
 
         //Add a listener to the new Event. Calls action method when invoked
         controller.OnLandEvent.AddListener(Grounded);
@@ -50,6 +52,7 @@ public class CharacterMovement : MonoBehaviour
     {
         InputManager();
         RotationToMousePos(hand);
+        HideHandWhenFlip();
     }
 
     void FixedUpdate()
@@ -137,7 +140,7 @@ public class CharacterMovement : MonoBehaviour
         float angle = AngleBetweenTwoPoints(positionOnScreen, mouseOnScreen);
  
         //Ta Daaa
-        if(transform.localScale.x < 0){
+        if(transform.localScale.x < 0){ //this deals with character flip
             objectToRotate.rotation =  Quaternion.Euler (new Vector3(0f,0f,angle));
         }
         else{
@@ -178,5 +181,25 @@ public class CharacterMovement : MonoBehaviour
         isShooting = true;
         yield return new WaitForSeconds(time);
         isShooting = false;
+    }
+
+    private void HideHandWhenFlip(){
+        if(transform.localScale.x != localScaleX){  //if local Scale changes
+            localScaleX = transform.localScale.x;   //reset
+
+            //change sorting layer of hand's child sprites
+            Transform currChild;
+            for(int i = 0; i < hand.childCount; i++){
+                currChild = hand.GetChild(i);
+                if(currChild.TryGetComponent<SpriteRenderer>(out SpriteRenderer sp)){
+                    if(transform.localScale.x < 0){
+                         sp.sortingLayerName = "player";
+                    }
+                    else{
+                        sp.sortingLayerName = "weapon";
+                    }
+                }
+            }
+        }
     }
 }

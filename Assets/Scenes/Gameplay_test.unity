@@ -610,7 +610,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.7058824, g: 0.17395887, b: 0, a: 1}
+  m_Color: {r: 0.4509804, g: 0.07450981, b: 0.07450981, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1166,7 +1166,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.1792453, g: 0.034979723, b: 0, a: 0}
+  m_BackGroundColor: {r: 0.18039216, g: 0, b: 0.025074413, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -2285,14 +2285,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1191921665572756930, guid: 929c5b9ab14da024c8bd4ed24e4ced63, type: 3}
-      propertyPath: m_SortingOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1191921665836067365, guid: 929c5b9ab14da024c8bd4ed24e4ced63, type: 3}
-      propertyPath: m_SortingOrder
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 1191921666386446656, guid: 929c5b9ab14da024c8bd4ed24e4ced63, type: 3}
       propertyPath: m_Name
       value: player
@@ -2340,26 +2332,6 @@ PrefabInstance:
     - target: {fileID: 1191921666386446665, guid: 929c5b9ab14da024c8bd4ed24e4ced63, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1191921666386446668, guid: 929c5b9ab14da024c8bd4ed24e4ced63, type: 3}
-      propertyPath: fireRate
-      value: 2.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 1191921666386446668, guid: 929c5b9ab14da024c8bd4ed24e4ced63, type: 3}
-      propertyPath: cannonRecoil
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 1191921666386446668, guid: 929c5b9ab14da024c8bd4ed24e4ced63, type: 3}
-      propertyPath: fireCoolDown
-      value: 0.35
-      objectReference: {fileID: 0}
-    - target: {fileID: 1191921666386446668, guid: 929c5b9ab14da024c8bd4ed24e4ced63, type: 3}
-      propertyPath: rateMultiplier
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1191921667154472443, guid: 929c5b9ab14da024c8bd4ed24e4ced63, type: 3}
-      propertyPath: m_SortingOrder
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 929c5b9ab14da024c8bd4ed24e4ced63, type: 3}
