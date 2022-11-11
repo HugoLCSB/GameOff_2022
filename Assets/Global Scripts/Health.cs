@@ -5,22 +5,25 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    [SerializeField] private float m_hp = 100;
-    [SerializeField] private float m_damageReductionPercent = 0;
+    [SerializeField] private float hp = 100;
+    [SerializeField] private float damageReductionPercent = 0;
+    [SerializeField] private bool isDamageable = true;
     [SerializeField] private UnityEvent onHealthZero;
 
-    public void Change(float amount){
+    public void ChangeHp(float amount){
         if(amount < 0){
-             m_hp += amount - (amount * m_damageReductionPercent);
+             hp += amount - (amount * damageReductionPercent);
         } 
         else{
-            m_hp += amount;
+            hp += amount;
         }
 
-        if(m_hp <= 0){
+        if(hp <= 0){
             onHealthZero.Invoke();
         }
     }
 
-
+    public bool IsDamageable(){
+        return isDamageable;
+    }
 }
