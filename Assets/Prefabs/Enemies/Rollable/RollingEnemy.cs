@@ -158,4 +158,9 @@ public class RollingEnemy : MonoBehaviour
             rb.velocity = new Vector2(nextDir.normalized.x * attackSpeed, rb.velocity.y);
         }
     }
+
+    public void Die(){
+        Debug.Log("Player Killed -Rolly-");
+        Destroy(gameObject);
+    }
 }
