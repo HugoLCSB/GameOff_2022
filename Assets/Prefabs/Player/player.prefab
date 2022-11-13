@@ -279,7 +279,8 @@ GameObject:
   - component: {fileID: 1191921666386446669}
   - component: {fileID: 1191921666386446670}
   - component: {fileID: 1191921666386446671}
-  m_Layer: 0
+  - component: {fileID: 1191921666686663785}
+  m_Layer: 7
   m_Name: player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -410,7 +411,7 @@ MonoBehaviour:
   runSpeed: 35
   jumpDelay: 0.4
   cannonRecoil: 10
-  cannonPower: 60000
+  cannonPower: 1500
   fallDownForce: 5
   fireRate: 2.8
   rateMultiplier: 0.35
@@ -482,6 +483,25 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
+--- !u!114 &1191921666686663785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1191921666386446656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2f453e7bf3a3408389323143e09c1fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hp: 100
+  damageReductionPercent: 0
+  isDamageable: 1
+  applyKnockBack: 1
+  onHealthZero:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1191921667154472445
 GameObject:
   m_ObjectHideFlags: 0

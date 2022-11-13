@@ -4,24 +4,17 @@ using UnityEngine;
 
 public class DoDamage : MonoBehaviour
 {
-    [SerializeField] private float damageAmount = 0;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [SerializeField] private float damageAmount = 1;
+    [SerializeField] private float attackKnockBack = 5;
 
     private void OnCollisionEnter2D(Collision2D other) {
         if(other.gameObject.TryGetComponent<Health>(out Health objectToHit)){
             if(objectToHit.IsDamageable()){
-                objectToHit.ChangeHp(-damageAmount);
+                if(attackKnockBack != 0){   //attack with KnockBack
+                    objectToHit.ChangeHp(-damageAmount, 
+                    attackKnockBack, transform.position);
+                }
+                else{objectToHit.ChangeHp(-damageAmount);}  //just do the damage
             }
         }
     }

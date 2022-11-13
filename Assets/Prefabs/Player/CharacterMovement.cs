@@ -175,7 +175,7 @@ public class CharacterMovement : MonoBehaviour
         //creating bullets at the firePoint and adding velocity to them
         GameObject shotInstance =  Instantiate(bullet, firePoint.position, transform.rotation);
         shotInstance.GetComponent<Rigidbody2D>().AddForce(new Vector2(mouseOnScreen.x - positionOnScreen.x,
-            mouseOnScreen.y - positionOnScreen.y).normalized * cannonPower);
+            mouseOnScreen.y - positionOnScreen.y).normalized * cannonPower, ForceMode2D.Impulse);
     }
     private IEnumerator waitShoot(float time){
         isShooting = true;
