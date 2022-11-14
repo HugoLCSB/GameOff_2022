@@ -98,7 +98,13 @@ public class RollingEnemy : MonoBehaviour
     }
 
     private void DoIdle(){
-        ChooseDir();
+        if(Time.time > nextTime){
+            ChooseDir();
+
+            //reset timer
+            nextTime = Time.time + Random.Range(idleTime-(idleTime*0.5f), idleTime+(idleTime*0.5f));
+        } 
+
         if(aggroOnBothSides){
             if(CheckAggro(Vector2.right)){ isAggro = true; }
             else{ isAggro = CheckAggro(Vector2.left); }
@@ -108,8 +114,7 @@ public class RollingEnemy : MonoBehaviour
         rb.velocity = new Vector2(nextDir.x * idleWalkSpeed, rb.velocity.y);
     }
 
-    private void ChooseDir(){
-        if(Time.time > nextTime){
+    private void ChooseDir(){   //randomly chooses what to do next, sets nextDir
             switch(Random.Range(1,3)){
                 case 1:
                     if(nextDir == Vector2.zero || nextDir == Vector2.right){
@@ -134,9 +139,6 @@ public class RollingEnemy : MonoBehaviour
                     }
                     break;
             }
-            //reset timer
-            nextTime = Time.time + Random.Range(idleTime-(idleTime*0.5f), idleTime+(idleTime*0.5f));
-        }
     }
 
     private bool CheckAggro(Vector2 dir){  //lounches a Raycast in search of the player
