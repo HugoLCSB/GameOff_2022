@@ -10,12 +10,17 @@ public class RollingEnemy : MonoBehaviour
     [SerializeField] private float attackDelay = 3;
     [SerializeField] private float aggroDistance = 10;
     [SerializeField] private bool aggroOnBothSides = false;
-    private EnemyState enemyState = EnemyState.idle;
+    [SerializeField] private bool canDoDamageWhileStopped = true;
+    [SerializeField] private bool immuneWhileAttacking = false;
+    private EnemyState enemyState = EnemyState.Idle;
     private float nextTime = 0;
     private Vector2 nextDir = Vector2.zero;
     private bool isAggro = false;
     private bool isStunned = false;
     private Rigidbody2D rb;
+    private Animator anim;
+    private Health health;
+    private DoDamage damage;
     private GameObject target;
 
 
@@ -23,41 +28,76 @@ public class RollingEnemy : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
+        if(immuneWhileAttacking){
+            health = GetComponent<Health>();
+        }
+        if(!canDoDamageWhileStopped){
+            damage = GetComponent<DoDamage>();
+            damage.isOn(false);
+        }
     }
 
     // Update is called once per frame
     public void Update()
     {
         switch(enemyState){
-            case EnemyState.idle:
+            case EnemyState.Idle:
                 DoIdle();
-                if(isAggro){
-                    enemyState = EnemyState.attack;
-                    nextTime = 0;
-                    nextDir = Vector2.zero;
-                    Debug.Log("ATTACK_MODE");
-                }
+                if(isStunned){ enemyState = Transition(EnemyState.Stunned); }
+                else if(isAggro){ enemyState = Transition(EnemyState.Attack); }
                 break;
 
-            case EnemyState.attack:
+            case EnemyState.Attack:
                 DoAttack();
-                if(!isAggro){
-                    enemyState = EnemyState.idle;
-                    nextTime = 0;
-                    nextDir = Vector2.zero;
-                    Debug.Log("IDLE_MODE");
+                if(isStunned){ enemyState = Transition(EnemyState.Stunned);  }
+                else if(!isAggro){ enemyState = Transition(EnemyState.Idle); }
+                break;
+
+                case EnemyState.Stunned:
+                DoStunned();
+                if(!isStunned){
+                    if(!isAggro){ enemyState = Transition(EnemyState.Idle); }
+                    else{ enemyState = Transition(EnemyState.Attack); }
                 }
                 break;
         }
     }
 
     enum EnemyState{
-        idle,
-        attack
+        Idle,
+        Attack,
+        Stunned
+    }
+
+    private EnemyState Transition(EnemyState nextState){
+        if(nextState == EnemyState.Idle || nextState == EnemyState.Attack){
+            //resetting
+            nextTime = 0;
+            nextDir = Vector2.zero;
+        }
+
+        //handling immunity while attacking and damage while stopped
+        if(immuneWhileAttacking && health != null){ 
+            if(nextState == EnemyState.Idle || nextState == EnemyState.Stunned){
+                health.Immunity(false);
+            }
+            else{ health.Immunity(true); } //when attack
+        }
+        if(!canDoDamageWhileStopped){
+            if(nextState == EnemyState.Idle || nextState == EnemyState.Stunned){
+                   damage.isOn(false);
+            }
+            else{ damage.isOn(true); } //when attack
+        }
+
+        //change animation
+        anim.SetTrigger("go" + nextState.ToString());
+        Debug.Log("NOW_ON -> " + nextState);
+        return nextState;
     }
 
     private void DoIdle(){
-
         ChooseDir();
         if(aggroOnBothSides){
             if(CheckAggro(Vector2.right)){ isAggro = true; }
@@ -102,16 +142,43 @@ public class RollingEnemy : MonoBehaviour
     private bool CheckAggro(Vector2 dir){  //lounches a Raycast in search of the player
         RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, aggroDistance, (1 << 7));
         if(hit && hit.collider.tag == "Player"){
-            Debug.Log("Found you, now Aggro");
             target = hit.collider.gameObject;
             return true;
         }
         else{return false;}
     }
 
+    private void DoAttack(){
+        if(Time.time > nextTime){
+            //direction of attack
+            nextDir = (target.transform.position - transform.position);
+
+            //I wanted this to be infinite, so it only reset when he hits something
+            nextTime = Time.time + 10000000;
+        }
+        //do attack
+        rb.velocity = new Vector2(nextDir.normalized.x * attackSpeed, rb.velocity.y);
+    }
+
+    private void DoStunned(){
+        if(Time.time > nextTime){
+            if(aggroOnBothSides){
+                if(CheckAggro(Vector2.right)){ isAggro = true; }
+                else{ isAggro = CheckAggro(Vector2.left); }
+            }else{ isAggro = CheckAggro(nextDir);}    //only on the side he's looking/ walking towards
+
+            isStunned = false;
+        }
+    }
+
+    public void Die(){
+        Debug.Log("Player Killed -Rolly-");
+        Destroy(gameObject);
+    }
+
     private void OnCollisionEnter2D(Collision2D other) {
-        if(other.gameObject.layer != 6){
-            if(enemyState == EnemyState.idle){
+        if(other.gameObject.layer != LayerMask.NameToLayer("ground")){
+            if(enemyState == EnemyState.Idle){
                 //hit some obstacle while on Idle mode
 
                 if(other.transform.position.x > transform.position.x){
@@ -120,47 +187,18 @@ public class RollingEnemy : MonoBehaviour
                 else{ nextDir = Vector2.right; }
             }
 
-            if(enemyState == EnemyState.attack){
-                //hit some obstacle while on Attack mode
+            if(enemyState == EnemyState.Attack){
+                if(other.gameObject.layer != LayerMask.NameToLayer("projectiles")){
+                    //hit some obstacle while on Attack mode
+                    Debug.Log(LayerMask.LayerToName(other.gameObject.layer));
                 
-                rb.velocity = new Vector2(0,rb.velocity.y);
-                isStunned = true;
+                    rb.velocity = new Vector2(0,rb.velocity.y);
+                    isStunned = true;
 
-                //reset timer
-                nextTime = Time.time + attackDelay;
+                    //reset timer
+                    nextTime = Time.time + attackDelay;
+                }
             }
         }
-    }
-
-    private void DoAttack(){
-
-        if(Time.time > nextTime){
-
-            if(!isStunned){
-                //direction of attack
-                nextDir = (target.transform.position - transform.position);
-
-                //I wanted this to be infinite, so it only reset when he hits something
-                nextTime = Time.time + 10000000;    
-            }
-            else{   //when stunned check for aggro
-                if(aggroOnBothSides){
-                    if(CheckAggro(Vector2.right)){ isAggro = true; }
-                    else{ isAggro = CheckAggro(Vector2.left); }
-                }else{ isAggro = CheckAggro(nextDir);}    //only on the side he's looking/ walking towards
-            }
-
-            isStunned = false;  //resetting
-        }
-
-        if(!isStunned){
-            //do attack
-            rb.velocity = new Vector2(nextDir.normalized.x * attackSpeed, rb.velocity.y);
-        }
-    }
-
-    public void Die(){
-        Debug.Log("Player Killed -Rolly-");
-        Destroy(gameObject);
     }
 }

@@ -44,6 +44,10 @@ public class Health : MonoBehaviour
         return isDamageable;
     }
 
+    public void Immunity(bool state){
+        isDamageable = !state;
+    }
+
     public float Hp(){
         return hp;
     }

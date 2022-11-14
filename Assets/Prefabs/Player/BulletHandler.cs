@@ -21,7 +21,6 @@ public class BulletHandler : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D other) {
         if(other.gameObject.layer == 8){
             Destroy(gameObject);
-            Debug.Log("HIT");
             //GetComponent<Collider2D>().enabled = false;
         }
     }

@@ -230,15 +230,15 @@ MonoBehaviour:
   takeChildrenIntoAccount: 0
   limits: {x: 6, y: 10}
   offset: {x: 0, y: 0}
---- !u!114 &1982495533 stripped
+--- !u!114 &1982495535 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4980135880033077294, guid: 19165a4db686f6a45a1f2672f3c41a62, type: 3}
+  m_CorrespondingSourceObject: {fileID: 4980135880033077292, guid: 19165a4db686f6a45a1f2672f3c41a62, type: 3}
   m_PrefabInstance: {fileID: 4980135878591968003}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19c94c1464fc87241ab5d2b449fa2064, type: 3}
+  m_Script: {fileID: 11500000, guid: d2f453e7bf3a3408389323143e09c1fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1191921666686663783
@@ -305,57 +305,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4980135878398185144, guid: 19165a4db686f6a45a1f2672f3c41a62, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 4980135880033077292, guid: 19165a4db686f6a45a1f2672f3c41a62, type: 3}
-      propertyPath: hp
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 4980135880033077292, guid: 19165a4db686f6a45a1f2672f3c41a62, type: 3}
-      propertyPath: onHealthZero.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4980135880033077292, guid: 19165a4db686f6a45a1f2672f3c41a62, type: 3}
-      propertyPath: onHealthZero.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4980135880033077292, guid: 19165a4db686f6a45a1f2672f3c41a62, type: 3}
-      propertyPath: onHealthZero.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+    - target: {fileID: 4980135880033077294, guid: 19165a4db686f6a45a1f2672f3c41a62, type: 3}
+      propertyPath: health
       value: 
-      objectReference: {fileID: 1982495533}
-    - target: {fileID: 4980135880033077292, guid: 19165a4db686f6a45a1f2672f3c41a62, type: 3}
-      propertyPath: onHealthZero.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4980135880033077292, guid: 19165a4db686f6a45a1f2672f3c41a62, type: 3}
-      propertyPath: onHealthZero.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Die
-      objectReference: {fileID: 0}
-    - target: {fileID: 4980135880033077292, guid: 19165a4db686f6a45a1f2672f3c41a62, type: 3}
-      propertyPath: onHealthZero.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: RollingEnemy, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 4980135880033077292, guid: 19165a4db686f6a45a1f2672f3c41a62, type: 3}
-      propertyPath: onHealthZero.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 4980135880033077293, guid: 19165a4db686f6a45a1f2672f3c41a62, type: 3}
-      propertyPath: damageAmount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4980135880033077293, guid: 19165a4db686f6a45a1f2672f3c41a62, type: 3}
-      propertyPath: intendedTarget.m_Bits
-      value: 128
+      objectReference: {fileID: 1982495535}
+    - target: {fileID: 4980135880033077294, guid: 19165a4db686f6a45a1f2672f3c41a62, type: 3}
+      propertyPath: canDoDamageWhileStopped
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4980135880033077295, guid: 19165a4db686f6a45a1f2672f3c41a62, type: 3}
       propertyPath: m_Name
       value: rolly
-      objectReference: {fileID: 0}
-    - target: {fileID: 4980135880033077295, guid: 19165a4db686f6a45a1f2672f3c41a62, type: 3}
-      propertyPath: m_Layer
-      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4980135880033077296, guid: 19165a4db686f6a45a1f2672f3c41a62, type: 3}
       propertyPath: m_RootOrder
@@ -367,7 +327,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4980135880033077296, guid: 19165a4db686f6a45a1f2672f3c41a62, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.44
+      value: -3.15
       objectReference: {fileID: 0}
     - target: {fileID: 4980135880033077296, guid: 19165a4db686f6a45a1f2672f3c41a62, type: 3}
       propertyPath: m_LocalPosition.z
