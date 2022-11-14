@@ -10,8 +10,16 @@ public class DoDamage : MonoBehaviour
     private bool isEnabled = true;
 
     private void OnCollisionEnter2D(Collision2D other) {
+        ApplyDamage(other.gameObject);
+    }
+
+    private void OnTriggerEnter2D(Collider2D other) {
+        ApplyDamage(other.gameObject);
+    }
+
+    private void ApplyDamage(GameObject other){
         //check if the other has a Health component
-        if(isEnabled && other.gameObject.TryGetComponent<Health>(out Health objectToHit)){
+        if(isEnabled && other.TryGetComponent<Health>(out Health objectToHit)){
             //is it demageable and in our target layer
             if(objectToHit.IsDamageable() && ((1<<objectToHit.gameObject.layer) == intendedTarget)){
                 if(attackKnockBack != 0){   //attack with KnockBack
@@ -20,7 +28,7 @@ public class DoDamage : MonoBehaviour
                 }
                 else{objectToHit.ChangeHp(-damageAmount);}  //just do the damage
 
-                Debug.Log("HIT(" + damageAmount + ") : " + this.name + " >> " + other.gameObject.name);
+                Debug.Log("HIT(" + damageAmount + ") : " + this.name + " >> " + other.name);
             }
         }
     }

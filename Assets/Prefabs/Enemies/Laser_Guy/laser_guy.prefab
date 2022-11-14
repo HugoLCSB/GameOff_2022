@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6956950580384727177}
   - component: {fileID: 4229778968791293578}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3586014766156517522}
   - component: {fileID: 4241935244956555504}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: face
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -178,7 +178,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1420842127794214529}
   - component: {fileID: 725878543407753341}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: detail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -261,7 +261,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4697197505545056806}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: firePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -295,11 +295,10 @@ GameObject:
   - component: {fileID: 8458983076758533575}
   - component: {fileID: 8561943828003497324}
   - component: {fileID: 5968318243778467896}
-  - component: {fileID: 3482489884995332845}
   - component: {fileID: 8580639558160314594}
   - component: {fileID: 7395288244395830337}
   - component: {fileID: 5379568171740056389}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: laser_guy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -379,24 +378,19 @@ MonoBehaviour:
   applyKnockBack: 1
   onHealthZero:
     m_PersistentCalls:
-      m_Calls: []
---- !u!114 &3482489884995332845
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6943958478592518675}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f56f5dc007c2e46fd93e1386cdc686f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damageAmount: 1
-  attackKnockBack: 5
-  intendedTarget:
-    serializedVersion: 2
-    m_Bits: 0
+      m_Calls:
+      - m_Target: {fileID: 8580639558160314594}
+        m_TargetAssemblyTypeName: LaserEnemy, Assembly-CSharp
+        m_MethodName: Die
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &8580639558160314594
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -409,6 +403,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9998f54ccb42b1a4a88ced92e4dd0654, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  idleTime: 3
+  idleWalkSpeed: 5
+  attackSpeed: 10
+  attackDelay: 3
+  attackDistance: 7
+  aggroDistance: 10
+  laserShotVelocity: 1
+  aggroOnBothSides: 1
+  canDoDamageWhileStopped: 0
+  immuneWhileAttacking: 0
+  firePoint: {fileID: 4697197505545056806}
+  laser: {fileID: 2506826768879094117, guid: 465c075d6f1a5154d9da73c8160699f5, type: 3}
 --- !u!114 &7395288244395830337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -450,7 +456,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2235021666595025045}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: arm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -485,7 +491,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7108463535045437237}
   - component: {fileID: 4211992498594560076}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Canon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
