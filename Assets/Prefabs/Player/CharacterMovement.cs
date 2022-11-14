@@ -6,7 +6,8 @@ using UnityEngine.Events;
 public class CharacterMovement : MonoBehaviour
 {
     [SerializeField] private CharacterController2D controller;
-    [SerializeField] private Transform hand;
+    [SerializeField] private Transform arm;
+    [SerializeField] private Transform face;
     [SerializeField] private Transform firePoint;
     [SerializeField] private GameObject bullet;
     [SerializeField] private string deathLayerName;
@@ -51,7 +52,8 @@ public class CharacterMovement : MonoBehaviour
     void Update()
     {
         InputManager();
-        RotationToMousePos(hand);
+        RotationToMousePos(arm);
+        RotationToMousePos(face);
         HideHandWhenFlip();
     }
 
@@ -189,8 +191,8 @@ public class CharacterMovement : MonoBehaviour
 
             //change sorting layer of hand's child sprites
             Transform currChild;
-            for(int i = 0; i < hand.childCount; i++){
-                currChild = hand.GetChild(i);
+            for(int i = 0; i < arm.childCount; i++){
+                currChild = arm.GetChild(i);
                 if(currChild.TryGetComponent<SpriteRenderer>(out SpriteRenderer sp)){
                     if(transform.localScale.x < 0){
                          sp.sortingLayerName = "player";
@@ -200,6 +202,9 @@ public class CharacterMovement : MonoBehaviour
                     }
                 }
             }
+
+            //this keeps in the arm in the same relative position even when flipped
+            arm.localPosition = new Vector2(-arm.localPosition.x, arm.localPosition.y);
         }
     }
 }
