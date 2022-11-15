@@ -6,11 +6,9 @@ using UnityEngine.Events;
 public class CharacterMovement : MonoBehaviour
 {
     [SerializeField] private CharacterController2D controller;
-    [SerializeField] private Transform arm;
-    [SerializeField] private Transform face;
     [SerializeField] private Transform firePoint;
     [SerializeField] private GameObject bullet;
-    [SerializeField] private string deathLayerName;
+    //[SerializeField] private string deathLayerName;//for falling or spikes or things that trigger death
     [SerializeField] private float runSpeed = 30;   //speed of the player
     [SerializeField] private float jumpDelay = 0.4f;    //cool down time between jumps
     [SerializeField] private float cannonRecoil = 12;   //KockBack received by the player after shooting
@@ -22,14 +20,12 @@ public class CharacterMovement : MonoBehaviour
     [SerializeField] private bool canJump = true;   //whether or not the player can jump
 
     public UnityEvent DeathEvent;
-
     private float horizontalMove;
     private float variableFireRate;
-    private float localScaleX;
     private bool jump = false;
     private bool isJumping = false;
     private bool isShooting = false;
-    private bool grounded = false;
+    //private bool grounded = false;
     private Rigidbody2D rb;
 
     // Start is called before the first frame update
@@ -37,11 +33,10 @@ public class CharacterMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         variableFireRate = fireRate;
-        localScaleX = transform.localScale.x;
 
         //Add a listener to the new Event. Calls action method when invoked
-        controller.OnLandEvent.AddListener(Grounded);
-        controller.OffLandEvent.AddListener(UnGrounded);
+        /*controller.OnLandEvent.AddListener(Grounded);
+        controller.OffLandEvent.AddListener(UnGrounded);*/
 
         //SetUp the death event
         if (DeathEvent == null)
@@ -52,9 +47,6 @@ public class CharacterMovement : MonoBehaviour
     void Update()
     {
         InputManager();
-        RotationToMousePos(arm);
-        RotationToMousePos(face);
-        HideHandWhenFlip();
     }
 
     void FixedUpdate()
@@ -66,12 +58,12 @@ public class CharacterMovement : MonoBehaviour
         jump = false;
     }
 
-    void Grounded()
+    /*void Grounded()
     {
         grounded = true;
         jump = false;
     }
-    void UnGrounded() { grounded = false; }
+    void UnGrounded() { grounded = false; }*/
 
     void InputManager()
     {
@@ -128,28 +120,6 @@ public class CharacterMovement : MonoBehaviour
         isJumping = false;
     }
 
-    private void RotationToMousePos(Transform objectToRotate){
-        //Get the Screen positions of the object
-        Vector2 positionOnScreen = Camera.main.WorldToViewportPoint (objectToRotate.position);
-        //Get the Screen position of the mouse
-        Vector2 mouseOnScreen = (Vector2)Camera.main.ScreenToViewportPoint(Input.mousePosition);
-         
-        //Get the angle between the points
-        float AngleBetweenTwoPoints(Vector3 a, Vector3 b) {
-            return Mathf.Atan2(a.y - b.y, a.x - b.x) * Mathf.Rad2Deg;
-        }
-
-        float angle = AngleBetweenTwoPoints(positionOnScreen, mouseOnScreen);
- 
-        //Ta Daaa
-        if(transform.localScale.x < 0){ //this deals with character flip
-            objectToRotate.rotation =  Quaternion.Euler (new Vector3(0f,0f,angle));
-        }
-        else{
-            objectToRotate.rotation =  Quaternion.Euler (new Vector3(0f,0f,angle-180));
-        }
-    }
-
     private void Shoot(){
         //Get the Screen positions of the object
         Vector2 positionOnScreen = Camera.main.WorldToViewportPoint (transform.position);
@@ -183,28 +153,5 @@ public class CharacterMovement : MonoBehaviour
         isShooting = true;
         yield return new WaitForSeconds(time);
         isShooting = false;
-    }
-
-    private void HideHandWhenFlip(){
-        if(transform.localScale.x != localScaleX){  //if local Scale changes
-            localScaleX = transform.localScale.x;   //reset
-
-            //change sorting layer of hand's child sprites
-            Transform currChild;
-            for(int i = 0; i < arm.childCount; i++){
-                currChild = arm.GetChild(i);
-                if(currChild.TryGetComponent<SpriteRenderer>(out SpriteRenderer sp)){
-                    if(transform.localScale.x < 0){
-                         sp.sortingLayerName = "player";
-                    }
-                    else{
-                        sp.sortingLayerName = "weapon";
-                    }
-                }
-            }
-
-            //this keeps in the arm in the same relative position even when flipped
-            arm.localPosition = new Vector2(-arm.localPosition.x, arm.localPosition.y);
-        }
     }
 }

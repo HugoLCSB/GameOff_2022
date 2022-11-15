@@ -104,7 +104,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -2084962367
   m_SortingLayer: 1
-  m_SortingOrder: 3
+  m_SortingOrder: 1
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   m_Color: {r: 0.09134057, g: 0, b: 0.16078432, a: 1}
   m_FlipX: 0
@@ -186,9 +186,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1700042475
-  m_SortingLayer: 2
-  m_SortingOrder: 0
+  m_SortingLayerID: -2084962367
+  m_SortingLayer: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
@@ -241,12 +241,14 @@ GameObject:
   m_Component:
   - component: {fileID: 1191921666386446665}
   - component: {fileID: 1191921666386446666}
-  - component: {fileID: 1191921666386446667}
-  - component: {fileID: 1191921666386446668}
   - component: {fileID: 1191921666386446669}
   - component: {fileID: 1191921666386446670}
   - component: {fileID: 1191921666386446671}
+  - component: {fileID: 1191921666386446667}
+  - component: {fileID: 1191921666386446668}
   - component: {fileID: 1191921666686663785}
+  - component: {fileID: 1191921666686663792}
+  - component: {fileID: 1191921666686663793}
   m_Layer: 7
   m_Name: player
   m_TagString: Player
@@ -313,7 +315,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -2084962367
   m_SortingLayer: 1
-  m_SortingOrder: 2
+  m_SortingOrder: 0
   m_Sprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
   m_Color: {r: 0.28356588, g: 0.10980391, b: 0.29411766, a: 1}
   m_FlipX: 0
@@ -325,69 +327,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1191921666386446667
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1191921666386446656}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a79765b824f171459201e12affee57d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_JumpForce: 600
-  m_CoyoteTime: 0.07
-  m_CrouchSpeed: 0.36
-  m_MovementSmoothing: 0.05
-  m_AirControl: 0
-  m_SwitchCharacterFlip: 1
-  m_WhatIsGround:
-    serializedVersion: 2
-    m_Bits: 64
-  m_GroundCheck: {fileID: 1191921667229772697}
-  m_CeilingCheck: {fileID: 1191921666015218864}
-  m_CrouchDisableCollider: {fileID: 0}
-  OnLandEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  OffLandEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  OnCrouchEvent:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &1191921666386446668
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1191921666386446656}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e302ae712a6e934995157b7d91810dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  controller: {fileID: 1191921666386446667}
-  arm: {fileID: 2681188681000134950}
-  face: {fileID: 66710111}
-  firePoint: {fileID: 4508917189625227077}
-  bullet: {fileID: 8310871646499747182, guid: 49e7b8a778f85a94b86a7e41f760c01f, type: 3}
-  deathLayerName: 
-  runSpeed: 35
-  jumpDelay: 0.4
-  cannonRecoil: 10
-  cannonPower: 60000
-  fallDownForce: 5
-  fireRate: 2.8
-  rateMultiplier: 0.35
-  rateCap: 15
-  canJump: 0
-  DeathEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!61 &1191921666386446669
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -451,6 +390,66 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
+--- !u!114 &1191921666386446667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1191921666386446656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a79765b824f171459201e12affee57d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_JumpForce: 600
+  m_CoyoteTime: 0.07
+  m_CrouchSpeed: 0.36
+  m_MovementSmoothing: 0.05
+  m_AirControl: 0
+  m_SwitchCharacterFlip: 1
+  m_WhatIsGround:
+    serializedVersion: 2
+    m_Bits: 64
+  m_GroundCheck: {fileID: 1191921667229772697}
+  m_CeilingCheck: {fileID: 1191921666015218864}
+  m_CrouchDisableCollider: {fileID: 0}
+  OnLandEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OffLandEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnCrouchEvent:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1191921666386446668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1191921666386446656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e302ae712a6e934995157b7d91810dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 1191921666386446667}
+  firePoint: {fileID: 4508917189625227077}
+  bullet: {fileID: 8310871646499747182, guid: 49e7b8a778f85a94b86a7e41f760c01f, type: 3}
+  runSpeed: 35
+  jumpDelay: 0.4
+  cannonRecoil: 10
+  cannonPower: 60000
+  fallDownForce: 5
+  fireRate: 2.8
+  rateMultiplier: 0.35
+  rateCap: 15
+  canJump: 0
+  DeathEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1191921666686663785
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -470,6 +469,38 @@ MonoBehaviour:
   onHealthZero:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1191921666686663792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1191921666386446656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 685a027ed6b94164dad95f7b2fee892b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  config:
+    partsAndParameters:
+    - part: {fileID: 2681188681000134950}
+      numberSpriteLevels: -4
+      keepRelativePosition: 1
+--- !u!114 &1191921666686663793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1191921666386446656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d504a246de2e994ebfd328eee7ed701, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectsToRotate:
+  - {fileID: 2681188681000134950}
+  - {fileID: 66710111}
 --- !u!1 &1191921667229772698
 GameObject:
   m_ObjectHideFlags: 0
@@ -636,9 +667,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1700042475
-  m_SortingLayer: 2
-  m_SortingOrder: 1
+  m_SortingLayerID: -2084962367
+  m_SortingLayer: 1
+  m_SortingOrder: 3
   m_Sprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
   m_Color: {r: 0.16037738, g: 0.16037738, b: 0.16037738, a: 1}
   m_FlipX: 0

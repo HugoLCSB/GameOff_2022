@@ -11,7 +11,6 @@ public class LaserEnemy : MonoBehaviour
     [SerializeField] private float attackDelay = 3;
     [SerializeField] private float attackDistance = 3;
     [SerializeField] private float aggroDistance = 10;
-    [SerializeField] private float laserShotVelocity = 1;
     [SerializeField] private bool aggroOnBothSides = false;
     [SerializeField] private bool canDoDamageWhileStopped = true;
     [SerializeField] private bool immuneWhileAttacking = false;
@@ -19,17 +18,25 @@ public class LaserEnemy : MonoBehaviour
     [SerializeField] private GameObject laser;
 
     private EnemyState enemyState = EnemyState.Idle;
-     private float nextTime = 0;
+    private float nextTime = 0;
     private Vector2 nextDir = Vector2.zero;
     private bool isAggro = false;
     private bool isStunned = false;
     private Rigidbody2D rb;
+    private Health health;
+    private FlipOnMovement flip;
     private GameObject target; 
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+
+        if(immuneWhileAttacking){
+            health = GetComponent<Health>();
+        }
+
+        flip = GetComponent<FlipOnMovement>();
     }
 
     // Update is called once per frame
@@ -71,6 +78,20 @@ public class LaserEnemy : MonoBehaviour
             nextDir = Vector2.zero;
         }
 
+        if(nextState == EnemyState.Idle || nextState == EnemyState.Stunned){
+             flip.SetTarget(null);  //deselecting target so he flips on movement
+
+            if(immuneWhileAttacking && health != null){ 
+                health.Immunity(false);
+            }
+        }
+        else{   //attack
+            flip.SetTarget(target.transform);   //deselecting target so he flips towards him
+
+            if(immuneWhileAttacking && health != null){ 
+                health.Immunity(true);
+            }
+        }
 
         Debug.Log("NOW_ON -> " + nextState);
         return nextState;
@@ -156,7 +177,7 @@ public class LaserEnemy : MonoBehaviour
         //move closer to player
         if(Vector2.Distance(target.transform.position, transform.position) > attackDistance){
             nextDir = (target.transform.position - transform.position).normalized;
-            rb.velocity = new Vector2(nextDir.x * idleWalkSpeed, rb.velocity.y);
+            rb.velocity = new Vector2(nextDir.x * attackSpeed, rb.velocity.y);
         }
     }
 
@@ -181,7 +202,7 @@ public class LaserEnemy : MonoBehaviour
             if(enemyState == EnemyState.Attack){
                 if(other.gameObject.layer == LayerMask.NameToLayer("projectiles")){
                     //hit some obstacle while on Attack mode
-                    Debug.Log(LayerMask.LayerToName(other.gameObject.layer));
+                    //Debug.Log(LayerMask.LayerToName(other.gameObject.layer));
                 
                     //rb.velocity = new Vector2(0,rb.velocity.y);
                     isStunned = true;

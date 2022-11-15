@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 3570941023837063562}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.6, y: 1.2, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3316477001734112270}
@@ -70,8 +70,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1040209291
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
   m_Color: {r: 0.57912517, g: 0.8301887, b: 0.33285868, a: 1}
@@ -154,9 +154,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 1040209291
+  m_SortingLayer: 1
+  m_SortingOrder: 1
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   m_Color: {r: 0.8884808, g: 1, b: 0, a: 1}
   m_FlipX: 0
@@ -193,7 +193,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6021195052059941748}
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 1, y: 0.054, z: -0.41392812}
+  m_LocalPosition: {x: 0.544, y: 0.054, z: -0.41392812}
   m_LocalScale: {x: 0.11, y: 0.9, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -238,9 +238,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1700042475
-  m_SortingLayer: 2
-  m_SortingOrder: 1
+  m_SortingLayerID: 1040209291
+  m_SortingLayer: 1
+  m_SortingOrder: 3
   m_Sprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
   m_Color: {r: 0.19824673, g: 0.9339623, b: 0.8721846, a: 1}
   m_FlipX: 0
@@ -276,7 +276,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6069748260733728378}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.12, y: 0, z: 0}
+  m_LocalPosition: {x: 1.6639996, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -298,6 +298,7 @@ GameObject:
   - component: {fileID: 8580639558160314594}
   - component: {fileID: 7395288244395830337}
   - component: {fileID: 5379568171740056389}
+  - component: {fileID: 2623950451401409303}
   m_Layer: 8
   m_Name: laser_guy
   m_TagString: Untagged
@@ -405,11 +406,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   idleTime: 3
   idleWalkSpeed: 5
-  attackSpeed: 10
+  attackSpeed: 7
   attackDelay: 3
-  attackDistance: 7
-  aggroDistance: 10
-  laserShotVelocity: 1
+  attackDistance: 6
+  aggroDistance: 30
   aggroOnBothSides: 1
   canDoDamageWhileStopped: 0
   immuneWhileAttacking: 0
@@ -447,6 +447,23 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &2623950451401409303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6943958478592518675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 685a027ed6b94164dad95f7b2fee892b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  config:
+    partsAndParameters:
+    - part: {fileID: 2235021666595025045}
+      numberSpriteLevels: -4
+      keepRelativePosition: 1
 --- !u!1 &8837856325722358854
 GameObject:
   m_ObjectHideFlags: 0
@@ -471,7 +488,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8837856325722358854}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.4, y: -0.2, z: 0}
+  m_LocalPosition: {x: 0.019, y: -0.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -492,7 +509,7 @@ GameObject:
   - component: {fileID: 7108463535045437237}
   - component: {fileID: 4211992498594560076}
   m_Layer: 8
-  m_Name: Canon
+  m_Name: weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -506,8 +523,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9124490329229948154}
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 1, y: 0, z: 0}
-  m_LocalScale: {x: 0.3, y: 1.2, z: 1}
+  m_LocalPosition: {x: 0.5439997, y: 0, z: 0}
+  m_LocalScale: {x: 0.4, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2235021666595025045}
@@ -551,9 +568,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1700042475
-  m_SortingLayer: 2
-  m_SortingOrder: 0
+  m_SortingLayerID: 1040209291
+  m_SortingLayer: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
   m_Color: {r: 0.14509805, g: 0.65882355, b: 0.61459833, a: 1}
   m_FlipX: 0

@@ -285,6 +285,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: laser_guy
       objectReference: {fileID: 0}
+    - target: {fileID: 6943958478592518675, guid: e788a2870593db643b1d5ee94272a283, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e788a2870593db643b1d5ee94272a283, type: 3}
 --- !u!114 &1982495535 stripped
@@ -376,7 +380,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4980135880033077295, guid: 19165a4db686f6a45a1f2672f3c41a62, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4980135880033077296, guid: 19165a4db686f6a45a1f2672f3c41a62, type: 3}
       propertyPath: m_RootOrder

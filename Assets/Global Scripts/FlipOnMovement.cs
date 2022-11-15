@@ -4,36 +4,39 @@ using UnityEngine;
 
 public class FlipOnMovement : MonoBehaviour
 {
-    private float localScaleX;
+    [SerializeField] Transform target;
     private float posX;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        localScaleX = transform.localScale.x;
-        posX = transform.position.x;
-    }
 
     // Update is called once per frame
     void Update()
     {
-        if(transform.position.x != posX){
-            if(transform.position.x > posX){
-                if(localScaleX < 0){
-                    transform.localScale = new Vector3(transform.localScale.x * -1,
-                     transform.localScale.y, transform.localScale.z);
-                    localScaleX = 1;
-                }
-            }
-            else{
-                if(localScaleX > 0){
-                    transform.localScale = new Vector3(transform.localScale.x * -1,
-                     transform.localScale.y, transform.localScale.z);
-                    localScaleX = -1;
-                }
+        if(target == null){
+            if(transform.position.x != posX){
+                Flip(transform.position.x); //flip on movement
             }
         }
+        else{ Flip(target.position.x); }    //flip to target
 
         posX = transform.position.x;
+    }
+
+    private void Flip(float xValueToWatch){
+        Vector3 newLocalScale = new Vector3(transform.localScale.x * -1,
+                    transform.localScale.y, transform.localScale.z);
+
+        if(xValueToWatch > posX){
+            if(transform.localScale.x < 0){ //flip right
+                transform.localScale = newLocalScale;
+            }
+        }
+        else{
+            if(transform.localScale.x > 0){ //flip left
+                transform.localScale = newLocalScale;
+            }
+        }
+    }
+
+    public void SetTarget(Transform newTarget){
+        target = newTarget;
     }
 }
