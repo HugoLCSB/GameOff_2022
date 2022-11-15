@@ -10,21 +10,21 @@ public class DoDamage : MonoBehaviour
     private bool isEnabled = true;
 
     private void OnCollisionEnter2D(Collision2D other) {
-        ApplyDamage(other.gameObject);
+        ApplyDamage(other.gameObject, other.contacts[0].point);
     }
 
-    private void OnTriggerEnter2D(Collider2D other) {
-        ApplyDamage(other.gameObject);
-    }
+    /*private void OnTriggerEnter2D(Collider2D other) {
+        ApplyDamage(other.gameObject, transform.position);
+    }*/
 
-    private void ApplyDamage(GameObject other){
+    private void ApplyDamage(GameObject other, Vector2 point){
         //check if the other has a Health component
         if(isEnabled && other.TryGetComponent<Health>(out Health objectToHit)){
             //is it demageable and in our target layer
             if(objectToHit.IsDamageable() && ((1<<objectToHit.gameObject.layer) == intendedTarget)){
                 if(attackKnockBack != 0){   //attack with KnockBack
                     objectToHit.ChangeHp(-damageAmount, 
-                    attackKnockBack, transform.position);
+                    attackKnockBack, point);
                 }
                 else{objectToHit.ChangeHp(-damageAmount);}  //just do the damage
 

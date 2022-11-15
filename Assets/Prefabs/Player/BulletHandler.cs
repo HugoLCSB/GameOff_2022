@@ -6,6 +6,7 @@ public class BulletHandler : MonoBehaviour
 {
     [SerializeField] private float lifeTime = 0.5f;
     [SerializeField] private float ownVelocity = 0;
+    [SerializeField] private LayerMask intendedTarget;
     private Vector2 dir;
     private Rigidbody2D rb;
 
@@ -25,7 +26,7 @@ public class BulletHandler : MonoBehaviour
     }
 
     private void OnCollisionEnter2D(Collision2D other) {
-        if(other.gameObject.layer == 8){
+        if((1<<other.gameObject.layer) == intendedTarget){
             Destroy(gameObject);
             //GetComponent<Collider2D>().enabled = false;
         }
