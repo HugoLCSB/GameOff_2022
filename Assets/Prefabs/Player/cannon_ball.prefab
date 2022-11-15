@@ -137,6 +137,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e52b937ac85849d4e8bcf0fc29e6c3ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  effects:
+  - {fileID: 5673210672232734049, guid: d64a7580ca01fcb4c8e527e6c0a76659, type: 3}
+  - {fileID: 1343825427626578901, guid: 975e100de6944e24aad85a6b86ef0a9c, type: 3}
   lifeTime: 2
   ownVelocity: 0
   intendedTarget:

@@ -1946,6 +1946,10 @@ PrefabInstance:
       propertyPath: explosion
       value: 
       objectReference: {fileID: 5673210672232734052, guid: d64a7580ca01fcb4c8e527e6c0a76659, type: 3}
+    - target: {fileID: 1191921666386446668, guid: 929c5b9ab14da024c8bd4ed24e4ced63, type: 3}
+      propertyPath: particles
+      value: 
+      objectReference: {fileID: 1343825427626578904, guid: 975e100de6944e24aad85a6b86ef0a9c, type: 3}
     - target: {fileID: 4534739100583850248, guid: 929c5b9ab14da024c8bd4ed24e4ced63, type: 3}
       propertyPath: m_Enabled
       value: 1

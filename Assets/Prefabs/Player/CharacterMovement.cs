@@ -8,7 +8,6 @@ public class CharacterMovement : MonoBehaviour
     [SerializeField] private CharacterController2D controller;
     [SerializeField] private Transform firePoint;
     [SerializeField] private GameObject bullet;
-    [SerializeField] private GameObject explosion;
     //[SerializeField] private string deathLayerName;//for falling or spikes or things that trigger death
     [SerializeField] private float runSpeed = 30;   //speed of the player
     [SerializeField] private float jumpDelay = 0.4f;    //cool down time between jumps
@@ -149,8 +148,6 @@ public class CharacterMovement : MonoBehaviour
         GameObject shotInstance =  Instantiate(bullet, firePoint.position, transform.rotation);
         shotInstance.GetComponent<Rigidbody2D>().AddForce(new Vector2(mouseOnScreen.x - positionOnScreen.x,
             mouseOnScreen.y - positionOnScreen.y).normalized * cannonPower);
-
-        Instantiate(explosion, firePoint.position, transform.rotation);
     }
     private IEnumerator waitShoot(float time){
         isShooting = true;

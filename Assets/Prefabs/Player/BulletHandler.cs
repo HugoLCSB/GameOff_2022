@@ -4,11 +4,20 @@ using UnityEngine;
 
 public class BulletHandler : MonoBehaviour
 {
+    [SerializeField] private Transform[] effects;
     [SerializeField] private float lifeTime = 0.5f;
     [SerializeField] private float ownVelocity = 0;
     [SerializeField] private LayerMask intendedTarget;
     private Vector2 dir;
     private Rigidbody2D rb;
+
+    private void Awake() {
+        if(effects.Length != 0){
+            for(int i = 0; i < effects.Length; i++){
+                Instantiate(effects[i], transform.position, transform.rotation);
+            }
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
