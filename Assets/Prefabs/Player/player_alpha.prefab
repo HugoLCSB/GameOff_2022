@@ -814,6 +814,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3790698304245488938}
   - component: {fileID: 4387273570142579206}
+  - component: {fileID: 154167889}
   m_Layer: 0
   m_Name: Canon
   m_TagString: Untagged
@@ -888,6 +889,47 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &154167889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 352796236100132852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShadowGroup: 0
+  m_ComponentVersion: 1
+  m_HasRenderer: 1
+  m_UseRendererSilhouette: 1
+  m_CastsShadows: 1
+  m_SelfShadows: 0
+  m_ApplyToSortingLayers: 000000008b55003e
+  m_ShapePath:
+  - {x: -0.49345097, y: -0.5316653, z: 0}
+  - {x: -0.48517054, y: 0.5891637, z: 0}
+  - {x: -0.44620338, y: 0.7179616, z: 0}
+  - {x: -0.3440849, y: 0.8536595, z: 0}
+  - {x: -0.20332733, y: 0.9548579, z: 0}
+  - {x: -0.004609755, y: 0.99625766, z: 0}
+  - {x: 0.14994745, y: 0.97555757, z: 0}
+  - {x: 0.31278494, y: 0.8904589, z: 0}
+  - {x: 0.42042327, y: 0.7685607, z: 0}
+  - {x: 0.48818082, y: 0.60117966, z: 0}
+  - {x: 0.49561647, y: -0.5700062, z: 0}
+  - {x: 0.4259429, y: -0.75401855, z: 0}
+  - {x: 0.32382488, y: -0.8759168, z: 0}
+  - {x: 0.16650724, y: -0.9679153, z: 0}
+  - {x: -0.0046100393, y: -0.993212, z: 0}
+  - {x: -0.2198872, y: -0.94491565, z: 0}
+  - {x: -0.3661646, y: -0.83221734, z: 0}
+  - {x: -0.46000326, y: -0.68961954, z: 0}
+  m_ShapePathHash: 1683235465
+  m_Mesh: {fileID: 0}
+  m_InstanceId: 24198
 --- !u!1 &1191921666015218865
 GameObject:
   m_ObjectHideFlags: 0
@@ -937,13 +979,14 @@ GameObject:
   - component: {fileID: 1191921666686663785}
   - component: {fileID: 1191921666686663792}
   - component: {fileID: 1191921666686663793}
+  - component: {fileID: 1755361199}
   m_Layer: 7
-  m_Name: player
+  m_Name: player_alpha
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1191921666386446665
 Transform:
   m_ObjectHideFlags: 0
@@ -1127,7 +1170,6 @@ MonoBehaviour:
   controller: {fileID: 1191921666386446667}
   firePoint: {fileID: 4508917189625227077}
   bullet: {fileID: 8310871646499747182, guid: 49e7b8a778f85a94b86a7e41f760c01f, type: 3}
-  explosion: {fileID: 8223364430277516481, guid: c36fa4cffda1b054192b135b7e2db25f, type: 3}
   runSpeed: 35
   jumpDelay: 0.4
   cannonRecoil: 10
@@ -1171,11 +1213,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 685a027ed6b94164dad95f7b2fee892b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  config:
-    partsAndParameters:
-    - part: {fileID: 2681188681000134950}
-      numberSpriteLevels: -4
-      keepRelativePosition: 1
+  numberSpriteLevels: 0
+  keepRelativePosition: 0
 --- !u!114 &1191921666686663793
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1188,9 +1227,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d504a246de2e994ebfd328eee7ed701, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectsToRotate:
-  - {fileID: 2681188681000134950}
-  - {fileID: 66710111}
+  rightAngleLimits: {x: 0, y: 0}
+  leftAngleLimits: {x: 0, y: 0}
+  mouseAngle: 0
+--- !u!114 &1755361199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1191921666386446656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShadowGroup: 0
+  m_ComponentVersion: 1
+  m_HasRenderer: 1
+  m_UseRendererSilhouette: 0
+  m_CastsShadows: 1
+  m_SelfShadows: 0
+  m_ApplyToSortingLayers: 000000008b55003e
+  m_ShapePath:
+  - {x: -0.49489138, y: -0.49730992, z: 0}
+  - {x: -0.49498495, y: 0.5227866, z: 0}
+  - {x: -0.47426024, y: 0.63741064, z: 0}
+  - {x: -0.41304016, y: 0.77846456, z: 0}
+  - {x: -0.30072427, y: 0.88649845, z: 0}
+  - {x: -0.1718396, y: 0.961395, z: 0}
+  - {x: -0.0076765716, y: 0.9952073, z: 0}
+  - {x: 0.14070825, y: 0.98010445, z: 0}
+  - {x: 0.29410818, y: 0.88869715, z: 0}
+  - {x: 0.41510373, y: 0.7648275, z: 0}
+  - {x: 0.4741579, y: 0.6316626, z: 0}
+  - {x: 0.494252, y: 0.49190545, z: 0}
+  - {x: 0.4971026, y: -0.5031049, z: 0}
+  - {x: 0.48169687, y: -0.6340046, z: 0}
+  - {x: 0.3969125, y: -0.7956464, z: 0}
+  - {x: 0.27171755, y: -0.9197755, z: 0}
+  - {x: 0.10969567, y: -0.9826789, z: 0}
+  - {x: -0.0792419, y: -0.9857292, z: 0}
+  - {x: -0.25933427, y: -0.92397094, z: 0}
+  - {x: -0.3911631, y: -0.8045707, z: 0}
+  - {x: -0.4800844, y: -0.647326, z: 0}
+  m_ShapePathHash: 2099384618
+  m_Mesh: {fileID: 0}
+  m_InstanceId: 24240
 --- !u!1 &1191921667229772698
 GameObject:
   m_ObjectHideFlags: 0
@@ -1297,6 +1380,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1096906983030462523}
   - component: {fileID: 4534739100583850248}
+  - component: {fileID: 83256237}
   m_Layer: 0
   m_Name: detail
   m_TagString: Untagged
@@ -1371,3 +1455,145 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &83256237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9134543910425720613}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ComponentVersion: 1
+  m_LightType: 2
+  m_BlendStyleIndex: 0
+  m_FalloffIntensity: 0.5
+  m_Color: {r: 0, g: 1, b: 0.7098849, a: 1}
+  m_Intensity: 10
+  m_LightVolumeIntensity: 1
+  m_LightVolumeIntensityEnabled: 0
+  m_ApplyToSortingLayers: 000000008b55003ec1ffb983
+  m_LightCookieSprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
+  m_DeprecatedPointLightCookieSprite: {fileID: 0}
+  m_LightOrder: 0
+  m_AlphaBlendOnOverlap: 0
+  m_OverlapOperation: 0
+  m_NormalMapDistance: 3
+  m_NormalMapQuality: 2
+  m_UseNormalMap: 0
+  m_ShadowIntensityEnabled: 0
+  m_ShadowIntensity: 0.75
+  m_ShadowVolumeIntensityEnabled: 0
+  m_ShadowVolumeIntensity: 0.75
+  m_Vertices:
+  - position: {x: 0.37109375, y: 0.87109375, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 1}
+    uv: {x: 0.87109375, y: 0.9355469}
+  - position: {x: 0.5, y: -0.62890625, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 1}
+    uv: {x: 1, y: 0.18554688}
+  - position: {x: 0.5, y: 0.62890625, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 1}
+    uv: {x: 1, y: 0.8144531}
+  - position: {x: 0.37109375, y: -0.87109375, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 1}
+    uv: {x: 0.87109375, y: 0.064453125}
+  - position: {x: 0.12890625, y: 1, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 1}
+    uv: {x: 0.62890625, y: 1}
+  - position: {x: 0.12890625, y: -1, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 1}
+    uv: {x: 0.62890625, y: 0}
+  - position: {x: -0.12890625, y: 1, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 1}
+    uv: {x: 0.37109375, y: 1}
+  - position: {x: -0.12890625, y: -1, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 1}
+    uv: {x: 0.37109375, y: 0}
+  - position: {x: -0.37109375, y: 0.87109375, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 1}
+    uv: {x: 0.12890625, y: 0.9355469}
+  - position: {x: -0.37109375, y: -0.87109375, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 1}
+    uv: {x: 0.12890625, y: 0.064453125}
+  - position: {x: -0.5, y: 0.62890625, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 1}
+    uv: {x: 0, y: 0.8144531}
+  - position: {x: -0.5, y: -0.62890625, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 1}
+    uv: {x: 0, y: 0.18554688}
+  - position: {x: 0, y: 0, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: 0, y: 0, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: 0, y: 0, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: 0, y: 0, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: 0, y: 0, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: 0, y: 0, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: 0, y: 0, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: 0, y: 0, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: 0, y: 0, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: 0, y: 0, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: 0, y: 0, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: 0, y: 0, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: 0, y: 0, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: 0, y: 0, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: 0, y: 0, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: 0, y: 0, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: 0, y: 0, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: 0, y: 0, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  m_Triangles: 0b000a000900080009000a00070009000800060007000800050007000600040005000600030005000400000003000400010003000000020001000000
+  m_LocalBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0.5, y: 1, z: 0}
+  m_PointLightInnerAngle: 360
+  m_PointLightOuterAngle: 360
+  m_PointLightInnerRadius: 0
+  m_PointLightOuterRadius: 1
+  m_ShapeLightParametricSides: 5
+  m_ShapeLightParametricAngleOffset: 0
+  m_ShapeLightParametricRadius: 1
+  m_ShapeLightFalloffSize: 0.5
+  m_ShapeLightFalloffOffset: {x: 0, y: 0}
+  m_ShapePath:
+  - {x: -0.5, y: -0.5, z: 0}
+  - {x: 0.5, y: -0.5, z: 0}
+  - {x: 0.5, y: 0.5, z: 0}
+  - {x: -0.5, y: 0.5, z: 0}

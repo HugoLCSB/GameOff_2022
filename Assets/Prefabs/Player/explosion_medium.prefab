@@ -49,8 +49,8 @@ MonoBehaviour:
   m_LightType: 1
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 1
-  m_Color: {r: 1, g: 0.1764706, b: 0, a: 1}
-  m_Intensity: 45
+  m_Color: {r: 1, g: 0.42050022, b: 0, a: 1}
+  m_Intensity: 20
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
   m_ApplyToSortingLayers: 000000008b55003ec1ffb983
@@ -243,6 +243,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e52b937ac85849d4e8bcf0fc29e6c3ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  effects: []
   lifeTime: 0.1
   ownVelocity: 0
   intendedTarget:
