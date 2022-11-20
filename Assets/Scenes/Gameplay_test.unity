@@ -2500,6 +2500,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: 0.86
       objectReference: {fileID: 0}
+    - target: {fileID: 6420028256371988499, guid: 4c3b9237bf9c5d9439c492e839d240be, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6813991243689707442, guid: 4c3b9237bf9c5d9439c492e839d240be, type: 3}
       propertyPath: m_BlendStyleIndex
       value: 0
