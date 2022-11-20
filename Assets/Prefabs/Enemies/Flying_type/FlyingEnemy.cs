@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LaserEnemy : MonoBehaviour
+public class FlyingEnemy : MonoBehaviour
 {
 
     [SerializeField] private float idleTime = 3;
@@ -12,13 +12,14 @@ public class LaserEnemy : MonoBehaviour
     [SerializeField] private float attackDistance = 3;
     [SerializeField] private float aggroDistance = 10;
     [SerializeField] private bool aggroOnBothSides = false;
+    [SerializeField] private bool canDoDamageWhileStopped = true;
     [SerializeField] private bool immuneWhileAttacking = false;
-    [SerializeField] private Transform firePoint;
-    [SerializeField] private GameObject laser;
 
     private EnemyState enemyState = EnemyState.Idle;
     private float nextTime = 0;
-    private Vector2 nextDir = Vector2.zero;
+    private float dirX;
+    private float dirY;
+    //private Vector2 nextDir = Vector2.zero;
     private bool isAggro = false;
     private bool isStunned = false;
     private Rigidbody2D rb;
@@ -74,7 +75,7 @@ public class LaserEnemy : MonoBehaviour
         if(nextState == EnemyState.Idle || nextState == EnemyState.Attack){
             //resetting
             nextTime = 0;
-            nextDir = Vector2.zero;
+            dirX = 0; dirY = 0;
         }
 
         if(nextState == EnemyState.Idle || nextState == EnemyState.Stunned){
@@ -98,7 +99,8 @@ public class LaserEnemy : MonoBehaviour
 
     private void DoIdle(){
         if(Time.time > nextTime){
-            ChooseDir();
+            ChooseDir(ref dirX);
+            ChooseDir(ref dirY);
 
             //reset timer
             nextTime = Time.time + Random.Range(idleTime-(idleTime*0.5f), idleTime+(idleTime*0.5f));
@@ -107,33 +109,33 @@ public class LaserEnemy : MonoBehaviour
         if(aggroOnBothSides){
             if(CheckAggro(Vector2.right)){ isAggro = true; }
             else{ isAggro = CheckAggro(Vector2.left); }
-        }else{ isAggro = CheckAggro(nextDir);}    //only on the side he's looking/ walking towards
+        }else{ isAggro = CheckAggro(new Vector2(dirX, dirY));}    //only on the side he's looking/ walking towards
 
         //move
-        rb.velocity = new Vector2(nextDir.x * idleWalkSpeed, rb.velocity.y);
+        rb.velocity = new Vector2(dirX, dirY).normalized * idleWalkSpeed;
     }
 
-    private void ChooseDir(){   //randomly chooses what to do next, sets nextDir
+    private void ChooseDir(ref float dir){   //randomly chooses what to do next, sets nextDir
             switch(Random.Range(1,3)){
                 case 1:
-                    if(nextDir == Vector2.zero || nextDir == Vector2.right){
+                    if(dir == 0 || dir == 1){
                         //last time we were either in "stop" or "right"
-                        nextDir = Vector2.right;
+                        dir = 1;
                         Debug.Log("right");
                     }
                     else{
-                        nextDir = Vector2.zero;
+                        dir = 0;
                         Debug.Log("stop");
                     }
                     break;
                 case 2:
-                    if(nextDir == Vector2.zero || nextDir == Vector2.left){
+                    if(dir == 0 || dir == -1){
                         //last time we were either in "stop" or "left"
-                        nextDir = Vector2.left;
+                        dir = -1;
                         Debug.Log("left");
                     }
                     else{
-                        nextDir = Vector2.zero;
+                        dir = 0;
                         Debug.Log("stop");
                     }
                     break;
@@ -150,34 +152,7 @@ public class LaserEnemy : MonoBehaviour
     }
 
     private void DoAttack(){
-        if(Time.time > nextTime){
-            
-
-            //Recoil (?)
-
-            //creating bullets at the firePoint and adding velocity to them
-            GameObject shotInstance =  Instantiate(laser, firePoint.position, Quaternion.identity);
-            
-            Vector2 newDir = new 
-            Vector2(target.transform.position.x - transform.position.x, 0).normalized;
-
-            if(newDir.x < 0){
-                // Multiply the player's x local scale by -1.
-                Vector3 theScale = shotInstance.transform.localScale;
-                theScale.x *= -1;
-                shotInstance.transform.localScale = theScale;
-            }
-
-            shotInstance.GetComponent<BulletHandler>().setDir(newDir);
-
-            nextTime = Time.time + attackDelay;
-        }
-
-        //move closer to player
-        if(Vector2.Distance(target.transform.position, transform.position) > attackDistance){
-            nextDir = (target.transform.position - transform.position).normalized;
-            rb.velocity = new Vector2(nextDir.x * attackSpeed, rb.velocity.y);
-        }
+        
     }
 
     private void DoStunned(){
@@ -185,7 +160,7 @@ public class LaserEnemy : MonoBehaviour
             if(aggroOnBothSides){
                 if(CheckAggro(Vector2.right)){ isAggro = true; }
                 else{ isAggro = CheckAggro(Vector2.left); }
-            }else{ isAggro = CheckAggro(nextDir);}    //only on the side he's looking/ walking towards
+            }else{ isAggro = CheckAggro(new Vector2(dirX, dirY));}    //only on the side he's looking/ walking towards
 
             isStunned = false;
         }
@@ -194,9 +169,9 @@ public class LaserEnemy : MonoBehaviour
      private void OnCollisionEnter2D(Collision2D other) {
         if(other.gameObject.layer != LayerMask.NameToLayer("ground")){
             if(other.transform.position.x > transform.position.x){
-                nextDir = Vector2.left;
+                dirY = -1;
             }
-            else{ nextDir = Vector2.right; }
+            else{  dirX = 1; }
 
             if(enemyState == EnemyState.Attack){
                 if(other.gameObject.layer == LayerMask.NameToLayer("projectiles")){

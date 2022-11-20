@@ -25,7 +25,7 @@ public class CharacterMovement : MonoBehaviour
     private bool jump = false;
     private bool isJumping = false;
     private bool isShooting = false;
-    //private bool grounded = false;
+    private bool grounded = false;
     private float localScaleX;
     private Rigidbody2D rb;
     private Animator anim;
@@ -39,8 +39,8 @@ public class CharacterMovement : MonoBehaviour
         localScaleX = transform.localScale.x;
 
         //Add a listener to the new Event. Calls action method when invoked
-        /*controller.OnLandEvent.AddListener(Grounded);
-        controller.OffLandEvent.AddListener(UnGrounded);*/
+        controller.OnLandEvent.AddListener(Grounded);
+        controller.OffLandEvent.AddListener(UnGrounded);
 
         //SetUp the death event
         if (DeathEvent == null)
@@ -53,9 +53,10 @@ public class CharacterMovement : MonoBehaviour
         InputManager();
 
         if(transform.localScale.x != localScaleX){
-            anim.SetTrigger("flip");
+            //anim.SetTrigger("flip");
             localScaleX = transform.localScale.x;
         }
+        anim.SetFloat("localScale", localScaleX);
     }
 
     void FixedUpdate()
@@ -68,14 +69,20 @@ public class CharacterMovement : MonoBehaviour
         }
         else{ anim.SetBool("isMoving", false); }
         jump = false;
+
+        anim.SetFloat("movementY", rb.velocity.y);
     }
 
-    /*void Grounded()
+    void Grounded()
     {
         grounded = true;
         jump = false;
+        anim.SetBool("grounded", true);
     }
-    void UnGrounded() { grounded = false; }*/
+    void UnGrounded() { 
+        grounded = false; 
+        anim.SetBool("grounded", false);
+    }
 
     void InputManager()
     {
@@ -133,6 +140,8 @@ public class CharacterMovement : MonoBehaviour
     }
 
     private void Shoot(){
+        anim.SetTrigger("shoot");
+
         //Get the Screen positions of the object
         Vector2 positionOnScreen = Camera.main.WorldToViewportPoint (transform.position);
         //Get the Screen position of the mouse
