@@ -81,7 +81,6 @@ public class CharacterController2D : MonoBehaviour
 				//Get the Screen position of the mouse
 				Vector2 mouseOnScreen = (Vector2)Camera.main.ScreenToViewportPoint(Input.mousePosition);
 
-				//adding velocity according to the direction from mouse to player (kockback on player)
 				Vector2 facingDirection = (new Vector2(positionOnScreen.x - mouseOnScreen.x,
 					positionOnScreen.y - mouseOnScreen.y).normalized);
 

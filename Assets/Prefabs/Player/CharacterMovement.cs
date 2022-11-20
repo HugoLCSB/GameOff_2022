@@ -26,13 +26,17 @@ public class CharacterMovement : MonoBehaviour
     private bool isJumping = false;
     private bool isShooting = false;
     //private bool grounded = false;
+    private float localScaleX;
     private Rigidbody2D rb;
+    private Animator anim;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
         variableFireRate = fireRate;
+        localScaleX = transform.localScale.x;
 
         //Add a listener to the new Event. Calls action method when invoked
         /*controller.OnLandEvent.AddListener(Grounded);
@@ -47,14 +51,22 @@ public class CharacterMovement : MonoBehaviour
     void Update()
     {
         InputManager();
+
+        if(transform.localScale.x != localScaleX){
+            anim.SetTrigger("flip");
+            localScaleX = transform.localScale.x;
+        }
     }
 
     void FixedUpdate()
     {
         //sending movement info to the character controller
         if((horizontalMove != 0 || jump) && !isShooting){
+            anim.SetBool("isMoving", true);
+            anim.SetFloat("moveDir", horizontalMove);
             controller.Move(horizontalMove * runSpeed * Time.fixedDeltaTime, false, jump);
         }
+        else{ anim.SetBool("isMoving", false); }
         jump = false;
     }
 
