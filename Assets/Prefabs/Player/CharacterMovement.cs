@@ -8,6 +8,7 @@ public class CharacterMovement : MonoBehaviour
     [SerializeField] private CharacterController2D controller;
     [SerializeField] private Transform firePoint;
     [SerializeField] private GameObject bullet;
+    [SerializeField] private GameObject arm;
     //[SerializeField] private string deathLayerName;//for falling or spikes or things that trigger death
     [SerializeField] private float runSpeed = 30;   //speed of the player
     [SerializeField] private float jumpDelay = 0.4f;    //cool down time between jumps
@@ -17,6 +18,8 @@ public class CharacterMovement : MonoBehaviour
     [SerializeField] private float fireRate = 2.8f; //cannon fire rate
     [SerializeField] private float rateMultiplier = 0.3f;  //percentage of the fireRate to add each shot
     [SerializeField] private float rateCap = 15; //Maximum allowed fireRate 
+    [SerializeField] private float overHeatingAmount = 2.8f; //number of shots before weapon overHeats
+    [SerializeField] private float overHeatingTime = 3f; //number of shots before weapon overHeats
     [SerializeField] private bool canJump = true;   //whether or not the player can jump
 
     public UnityEvent DeathEvent;
@@ -25,8 +28,10 @@ public class CharacterMovement : MonoBehaviour
     private bool jump = false;
     private bool isJumping = false;
     private bool isShooting = false;
+    private bool isOverHeating = false;
     private bool grounded = false;
     private float localScaleX;
+    private int counter;
     private Rigidbody2D rb;
     private Animator anim;
 
@@ -62,7 +67,7 @@ public class CharacterMovement : MonoBehaviour
     void FixedUpdate()
     {
         //sending movement info to the character controller
-        if((horizontalMove != 0 || jump) && !isShooting){
+        if((horizontalMove != 0 || jump) && (!isShooting || isOverHeating)){
             anim.SetBool("isMoving", true);
             anim.SetFloat("moveDir", horizontalMove);
             controller.Move(horizontalMove * runSpeed * Time.fixedDeltaTime, false, jump);
@@ -98,7 +103,19 @@ public class CharacterMovement : MonoBehaviour
         if(!isShooting){
            if(Input.GetButton("Fire1")){
                 Shoot();
-                StartCoroutine(waitShoot(1/variableFireRate));
+
+                counter++;
+                if(counter < overHeatingAmount){
+                    StartCoroutine(waitShoot(1/variableFireRate));
+                }
+                else{   //overheat
+                    StartCoroutine(OverHeating(overHeatingTime));
+
+                    if(arm.TryGetComponent<Animator>(out Animator armAnim)){
+                        armAnim.SetTrigger("overHeat");
+                    }
+                }
+                
 
                 //adding to the fire rate progressively if the fire button is held
                 if((variableFireRate > 0) && (variableFireRate < rateCap)){
@@ -108,6 +125,7 @@ public class CharacterMovement : MonoBehaviour
         }
         if(Input.GetButtonUp("Fire1") && variableFireRate != 0){
             variableFireRate = fireRate;    //reset fireRate
+            counter = 0;
         }//Debug.Log(variableFireRate);
 
         //CLICK DOWN = FALLING FASTER
@@ -141,6 +159,9 @@ public class CharacterMovement : MonoBehaviour
 
     private void Shoot(){
         anim.SetTrigger("shoot");
+        if(arm.TryGetComponent<Animator>(out Animator armAnim)){
+            armAnim.SetTrigger("shoot");
+        }
 
         //Get the Screen positions of the object
         Vector2 positionOnScreen = Camera.main.WorldToViewportPoint (transform.position);
@@ -174,5 +195,13 @@ public class CharacterMovement : MonoBehaviour
         isShooting = true;
         yield return new WaitForSeconds(time);
         isShooting = false;
+    }
+
+    private IEnumerator OverHeating(float time){
+        isOverHeating = true;
+        isShooting = true;
+        yield return new WaitForSeconds(time);
+        isShooting = false;
+        isOverHeating = false;
     }
 }
