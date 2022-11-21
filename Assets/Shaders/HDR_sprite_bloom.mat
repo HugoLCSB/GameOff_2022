@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: HDR_sprite_bloom
-  m_Shader: {fileID: 4800000, guid: a0ae618f72891b547935de6491267528, type: 3}
+  m_Shader: {fileID: 4800000, guid: e260cfa7296ee7642b167f1eb5be5023, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords:
   - _FLIPBOOKBLENDING_OFF

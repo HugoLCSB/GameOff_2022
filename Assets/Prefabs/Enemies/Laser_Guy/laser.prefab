@@ -49,7 +49,7 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 4.42, y: 0}
+  m_Offset: {x: 1, y: 0}
   m_Size: {x: 0.4, y: 0.4}
   m_Direction: 1
 --- !u!50 &-7378764676382637625
@@ -64,7 +64,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 0.0001
+  m_Mass: 0.1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
@@ -85,12 +85,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e52b937ac85849d4e8bcf0fc29e6c3ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effects: []
+  effects:
+  - {fileID: 8738629579765457489, guid: f57481db1d563a24e9d7dbdfcf333e13, type: 3}
   lifeTime: 0.5
   ownVelocity: 80
-  intendedTarget:
+  intendedTargets:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 129
 --- !u!114 &7575427671071522706
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,7 +134,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2506826769655548949}
   m_LocalRotation: {x: -0, y: -0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 3, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.06, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -160,7 +161,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 75c3422e9a0bdcc4bae40e3592dfcd80, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
