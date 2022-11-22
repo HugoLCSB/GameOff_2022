@@ -9,6 +9,7 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float smoothing = 0.1f;
     [SerializeField] private bool takeChildrenIntoAccount = true;
 
+    [SerializeField] private Vector2 centerPoint;
     [SerializeField] private Vector2 limits;
     [SerializeField] private Vector2 offset;
     private Vector3 sum;
@@ -42,8 +43,8 @@ public class CameraController : MonoBehaviour
 
         //Keep it in the limits
         Vector3 limited = Vector3.zero;
-        limited.x =  Mathf.Clamp(sum.x, -limits.x, limits.x);
-        limited.y =  Mathf.Clamp(sum.y, -limits.y, limits.y);
+        limited.x =  Mathf.Clamp(sum.x, -limits.x + centerPoint.x, limits.x + centerPoint.x);
+        limited.y =  Mathf.Clamp(sum.y, -limits.y + centerPoint.y, limits.y + centerPoint.y);
 
         Vector3 goal = limited;
 
@@ -56,6 +57,6 @@ public class CameraController : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.DrawWireCube(Vector2.zero, limits * 2);
+        Gizmos.DrawWireCube(centerPoint, (limits) * 2);
     }
 }
