@@ -7,7 +7,7 @@ public class BulletHandler : MonoBehaviour
     [SerializeField] private Transform[] effects;
     [SerializeField] private float lifeTime = 0.5f;
     [SerializeField] private float ownVelocity = 0;
-    [SerializeField] private LayerMask intendedTarget;
+    [SerializeField] private LayerMask intendedTargets;
     private Vector2 dir;
     private Rigidbody2D rb;
 
@@ -35,7 +35,8 @@ public class BulletHandler : MonoBehaviour
     }
 
     private void OnCollisionEnter2D(Collision2D other) {
-        if((1<<other.gameObject.layer) == intendedTarget){
+        //if((1<<other.gameObject.layer) == intendedTargets){
+        if(intendedTargets == (intendedTargets | (1 << other.gameObject.layer))){
             Destroy(gameObject);
             //GetComponent<Collider2D>().enabled = false;
         }
