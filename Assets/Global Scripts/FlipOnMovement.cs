@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FlipOnMovement : MonoBehaviour
 {
-    [SerializeField] Transform target;
+    [SerializeField] private Transform target;
     private float posX;
 
     // Update is called once per frame
