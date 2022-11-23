@@ -9,9 +9,10 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float smoothing = 0.1f;
     [SerializeField] private bool takeChildrenIntoAccount = true;
 
-    [SerializeField] private Vector2 centerPoint;
-    [SerializeField] private Vector2 limits;
-    [SerializeField] private Vector2 offset;
+    [SerializeField] private Vector2 centerPoint;   //(x, y)
+    [SerializeField] private Vector2 limitsX;   //(min, max)
+    [SerializeField] private Vector2 limitsY;   //(min, max)
+    [SerializeField] private Vector2 offset;    //(x, y)
     private Vector3 sum;
 
     private void FixedUpdate()
@@ -43,8 +44,8 @@ public class CameraController : MonoBehaviour
 
         //Keep it in the limits
         Vector3 limited = Vector3.zero;
-        limited.x =  Mathf.Clamp(sum.x, -limits.x + centerPoint.x, limits.x + centerPoint.x);
-        limited.y =  Mathf.Clamp(sum.y, -limits.y + centerPoint.y, limits.y + centerPoint.y);
+        limited.x =  Mathf.Clamp(sum.x, limitsX.x + centerPoint.x, limitsX.y + centerPoint.x);
+        limited.y =  Mathf.Clamp(sum.y, limitsY.x + centerPoint.y, limitsY.y + centerPoint.y);
 
         Vector3 goal = limited;
 
@@ -56,7 +57,11 @@ public class CameraController : MonoBehaviour
     }
 
     private void OnDrawGizmosSelected()
-    {
-        Gizmos.DrawWireCube(centerPoint, (limits) * 2);
+    {   
+        Vector2 lengthRectSides = new Vector2((limitsX.y - limitsX.x), (limitsY.y - limitsY.x));
+        Vector2 rectCenter = new Vector2(centerPoint.x + (limitsX.y + limitsX.x)/2,
+                                             centerPoint.y + (limitsY.y + limitsY.x)/2); 
+                                                             
+        Gizmos.DrawWireCube(rectCenter, lengthRectSides);
     }
 }
