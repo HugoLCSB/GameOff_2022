@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RollingEnemy : MonoBehaviour
+public class RollingEnemy : Enemy
 {
     [SerializeField] private float idleTime = 3;
     [SerializeField] private float idleWalkSpeed = 5;
@@ -12,16 +12,15 @@ public class RollingEnemy : MonoBehaviour
     [SerializeField] private bool aggroOnBothSides = false;
     [SerializeField] private bool canDoDamageWhileStopped = true;
     [SerializeField] private bool immuneWhileAttacking = false;
-    private EnemyState enemyState = EnemyState.Idle;
-    private float nextTime = 0;
+
+    [SerializeField] private GameObject target;
+
     private Vector2 nextDir = Vector2.zero;
-    private bool isAggro = false;
-    private bool isStunned = false;
+    private float nextTime = 0;
     private Rigidbody2D rb;
     private Animator anim;
     private Health health;
     private DoDamage damage;
-    private GameObject target;
 
 
     // Start is called before the first frame update
@@ -38,39 +37,7 @@ public class RollingEnemy : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    public void Update()
-    {
-        switch(enemyState){
-            case EnemyState.Idle:
-                DoIdle();
-                if(isStunned){ enemyState = Transition(EnemyState.Stunned); }
-                else if(isAggro){ enemyState = Transition(EnemyState.Attack); }
-                break;
-
-            case EnemyState.Attack:
-                DoAttack();
-                if(isStunned){ enemyState = Transition(EnemyState.Stunned);  }
-                else if(!isAggro){ enemyState = Transition(EnemyState.Idle); }
-                break;
-
-                case EnemyState.Stunned:
-                DoStunned();
-                if(!isStunned){
-                    if(!isAggro){ enemyState = Transition(EnemyState.Idle); }
-                    else{ enemyState = Transition(EnemyState.Attack); }
-                }
-                break;
-        }
-    }
-
-    enum EnemyState{
-        Idle,
-        Attack,
-        Stunned
-    }
-
-    private EnemyState Transition(EnemyState nextState){
+    protected override EnemyState Transition(EnemyState nextState){
         if(nextState == EnemyState.Idle || nextState == EnemyState.Attack){
             //resetting
             nextTime = 0;
@@ -97,60 +64,24 @@ public class RollingEnemy : MonoBehaviour
         return nextState;
     }
 
-    private void DoIdle(){
+   protected override void DoIdle(){
         if(Time.time > nextTime){
-            ChooseDir();
+            nextDir = ChooseHorizontalDir(nextDir);
 
             //reset timer
             nextTime = Time.time + Random.Range(idleTime-(idleTime*0.5f), idleTime+(idleTime*0.5f));
         } 
 
         if(aggroOnBothSides){
-            if(CheckAggro(Vector2.right)){ isAggro = true; }
-            else{ isAggro = CheckAggro(Vector2.left); }
-        }else{ isAggro = CheckAggro(nextDir);}    //only on the side he's looking/ walking towards
+            if(CheckAggro(Vector2.right, aggroDistance, target)){ isAggro = true; }
+            else{ isAggro = CheckAggro(Vector2.left, aggroDistance, target); }
+        }else{ isAggro = CheckAggro(nextDir, aggroDistance, target);}    //only on the side he's looking/ walking towards
 
         //move
         rb.velocity = new Vector2(nextDir.x * idleWalkSpeed, rb.velocity.y);
     }
 
-    private void ChooseDir(){   //randomly chooses what to do next, sets nextDir
-            switch(Random.Range(1,3)){
-                case 1:
-                    if(nextDir == Vector2.zero || nextDir == Vector2.right){
-                        //last time we were either in "stop" or "right"
-                        nextDir = Vector2.right;
-                        Debug.Log("right");
-                    }
-                    else{
-                        nextDir = Vector2.zero;
-                        Debug.Log("stop");
-                    }
-                    break;
-                case 2:
-                    if(nextDir == Vector2.zero || nextDir == Vector2.left){
-                        //last time we were either in "stop" or "left"
-                        nextDir = Vector2.left;
-                        Debug.Log("left");
-                    }
-                    else{
-                        nextDir = Vector2.zero;
-                        Debug.Log("stop");
-                    }
-                    break;
-            }
-    }
-
-    private bool CheckAggro(Vector2 dir){  //lounches a Raycast in search of the player
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, aggroDistance, (1 << 7));
-        if(hit && hit.collider.tag == "Player"){
-            target = hit.collider.gameObject;
-            return true;
-        }
-        else{return false;}
-    }
-
-    private void DoAttack(){
+    protected override void DoAttack(){
         if(Time.time > nextTime){
             //direction of attack
             nextDir = (target.transform.position - transform.position);
@@ -162,23 +93,18 @@ public class RollingEnemy : MonoBehaviour
         rb.velocity = new Vector2(nextDir.normalized.x * attackSpeed, rb.velocity.y);
     }
 
-    private void DoStunned(){
+    protected override void DoStunned(){
         if(Time.time > nextTime){
             if(aggroOnBothSides){
-                if(CheckAggro(Vector2.right)){ isAggro = true; }
-                else{ isAggro = CheckAggro(Vector2.left); }
-            }else{ isAggro = CheckAggro(nextDir);}    //only on the side he's looking/ walking towards
+                if(CheckAggro(Vector2.right, aggroDistance, target)){ isAggro = true; }
+                else{ isAggro = CheckAggro(Vector2.left, aggroDistance, target); }
+            }else{ isAggro = CheckAggro(nextDir, aggroDistance, target);}    //only on the side he's looking/ walking towards
 
             isStunned = false;
         }
     }
 
-    public void Die(){
-        Debug.Log("Player Killed -Rolly-");
-        Destroy(gameObject);
-    }
-
-    private void OnCollisionEnter2D(Collision2D other) {
+    protected override void OnCollisionEnter2D(Collision2D other) {
         if(other.gameObject.layer != LayerMask.NameToLayer("ground")){
             if(enemyState == EnemyState.Idle){
                 //hit some obstacle while on Idle mode

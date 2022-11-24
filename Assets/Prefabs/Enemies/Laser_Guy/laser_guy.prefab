@@ -837,7 +837,7 @@ MonoBehaviour:
   - {x: -0.29601923, y: -0.8879189, z: 0.000000029802322}
   m_ShapePathHash: -1781085732
   m_Mesh: {fileID: 0}
-  m_InstanceId: 138908
+  m_InstanceId: -205344
 --- !u!1 &5861541125585134067
 GameObject:
   m_ObjectHideFlags: 0
@@ -1169,6 +1169,7 @@ MonoBehaviour:
   immuneWhileAttacking: 0
   firePoint: {fileID: 4697197505545056806}
   laser: {fileID: 2506826768879094117, guid: 465c075d6f1a5154d9da73c8160699f5, type: 3}
+  target: {fileID: 0}
 --- !u!114 &7395288244395830337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1398,4 +1399,4 @@ MonoBehaviour:
   - {x: -0.46618533, y: -0.6411669, z: -0.000000029802322}
   m_ShapePathHash: 120911300
   m_Mesh: {fileID: 0}
-  m_InstanceId: 138910
+  m_InstanceId: -205362
