@@ -1132,6 +1132,9 @@ MonoBehaviour:
   damageReductionPercent: 0
   isDamageable: 1
   applyKnockBack: 1
+  onDamaged:
+    m_PersistentCalls:
+      m_Calls: []
   onHealthZero:
     m_PersistentCalls:
       m_Calls:

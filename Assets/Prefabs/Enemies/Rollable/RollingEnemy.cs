@@ -79,6 +79,9 @@ public class RollingEnemy : Enemy
 
         //move
         rb.velocity = new Vector2(nextDir.x * idleWalkSpeed, rb.velocity.y);
+
+        if(nextDir.x != 0){ anim.SetBool("isMoving", true); }
+        else{ anim.SetBool("isMoving", false); }
     }
 
     protected override void DoAttack(){
