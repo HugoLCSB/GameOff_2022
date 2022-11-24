@@ -20,6 +20,7 @@ public class LaserEnemy : Enemy
     private float nextTime = 0;
     private Vector2 nextDir = Vector2.zero;
     private Rigidbody2D rb;
+    private Animator anim;
     private Health health;
     private FlipOnMovement flip;
 
@@ -27,6 +28,7 @@ public class LaserEnemy : Enemy
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
 
         if(immuneWhileAttacking){
             health = GetComponent<Health>();
@@ -57,6 +59,8 @@ public class LaserEnemy : Enemy
             }
         }
 
+        //change animation
+        anim.SetTrigger("go" + nextState.ToString());
         Debug.Log("NOW_ON -> " + nextState);
         return nextState;
     }
@@ -76,11 +80,14 @@ public class LaserEnemy : Enemy
 
         //move
         rb.velocity = new Vector2(nextDir.x * idleWalkSpeed, rb.velocity.y);
+
+        if(nextDir.x != 0){ anim.SetBool("isMoving", true); }
+        else{ anim.SetBool("isMoving", false); }
     }
 
     protected override void DoAttack(){
         if(Time.time > nextTime){
-            
+             anim.SetTrigger("shoot");
 
             //Recoil (?)
 
@@ -107,6 +114,9 @@ public class LaserEnemy : Enemy
             nextDir = (target.transform.position - transform.position).normalized;
             rb.velocity = new Vector2(nextDir.x * attackSpeed, rb.velocity.y);
         }
+
+        if(rb.velocity.x != 0){ anim.SetBool("isMoving", true); }
+        else{ anim.SetBool("isMoving", false); }
     }
 
     protected override void DoStunned(){
