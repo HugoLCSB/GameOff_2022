@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: FlyEnemy_stunned
+  m_Name: FlyEnemy_aggro
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -22,7 +22,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.8113208
+        value: 0.8396226
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -41,7 +41,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.36313906
+        value: 0.13861692
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -60,7 +60,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.15690637
+        value: 0.13861692
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -77,7 +77,31 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
+      value: {fileID: 21300000, guid: 0f67b2c0aef9fe640b8a0176ae719060, type: 3}
+    - time: 0.16666667
+      value: {fileID: 21300000, guid: be5be03a7f2956f449f0e58f8eb85e75, type: 3}
+    - time: 0.33333334
+      value: {fileID: 21300000, guid: 0f67b2c0aef9fe640b8a0176ae719060, type: 3}
+    - time: 0.5
+      value: {fileID: 21300000, guid: 19235ea8a2c27d84b893ea1f7d4a4500, type: 3}
+    - time: 0.6666667
+      value: {fileID: 21300000, guid: 0f67b2c0aef9fe640b8a0176ae719060, type: 3}
+    - time: 0.8333333
+      value: {fileID: 21300000, guid: be5be03a7f2956f449f0e58f8eb85e75, type: 3}
+    - time: 1
+      value: {fileID: 21300000, guid: 0f67b2c0aef9fe640b8a0176ae719060, type: 3}
+    - time: 1.1666666
+      value: {fileID: 21300000, guid: 19235ea8a2c27d84b893ea1f7d4a4500, type: 3}
+    - time: 1.3333334
+      value: {fileID: 21300000, guid: 0f67b2c0aef9fe640b8a0176ae719060, type: 3}
+    - time: 1.5
+      value: {fileID: 21300000, guid: be5be03a7f2956f449f0e58f8eb85e75, type: 3}
+    - time: 1.6666666
       value: {fileID: 21300000, guid: 8f0e1be94b27d6142bb46c611b4e6013, type: 3}
+    - time: 1.8333334
+      value: {fileID: 21300000, guid: 19235ea8a2c27d84b893ea1f7d4a4500, type: 3}
+    - time: 2
+      value: {fileID: 21300000, guid: 0f67b2c0aef9fe640b8a0176ae719060, type: 3}
     attribute: m_Sprite
     path: body
     classID: 212
@@ -118,13 +142,25 @@ AnimationClip:
       customType: 0
       isPPtrCurve: 0
     pptrCurveMapping:
+    - {fileID: 21300000, guid: 0f67b2c0aef9fe640b8a0176ae719060, type: 3}
+    - {fileID: 21300000, guid: be5be03a7f2956f449f0e58f8eb85e75, type: 3}
+    - {fileID: 21300000, guid: 0f67b2c0aef9fe640b8a0176ae719060, type: 3}
+    - {fileID: 21300000, guid: 19235ea8a2c27d84b893ea1f7d4a4500, type: 3}
+    - {fileID: 21300000, guid: 0f67b2c0aef9fe640b8a0176ae719060, type: 3}
+    - {fileID: 21300000, guid: be5be03a7f2956f449f0e58f8eb85e75, type: 3}
+    - {fileID: 21300000, guid: 0f67b2c0aef9fe640b8a0176ae719060, type: 3}
+    - {fileID: 21300000, guid: 19235ea8a2c27d84b893ea1f7d4a4500, type: 3}
+    - {fileID: 21300000, guid: 0f67b2c0aef9fe640b8a0176ae719060, type: 3}
+    - {fileID: 21300000, guid: be5be03a7f2956f449f0e58f8eb85e75, type: 3}
     - {fileID: 21300000, guid: 8f0e1be94b27d6142bb46c611b4e6013, type: 3}
+    - {fileID: 21300000, guid: 19235ea8a2c27d84b893ea1f7d4a4500, type: 3}
+    - {fileID: 21300000, guid: 0f67b2c0aef9fe640b8a0176ae719060, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.016666668
+    m_StopTime: 2.0166667
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -145,7 +181,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.8113208
+        value: 0.8396226
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -164,7 +200,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.36313906
+        value: 0.13861692
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -183,7 +219,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.15690637
+        value: 0.13861692
         inSlope: 0
         outSlope: 0
         tangentMode: 136

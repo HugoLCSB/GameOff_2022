@@ -204,4 +204,8 @@ public class CharacterMovement : MonoBehaviour
         isShooting = false;
         isOverHeating = false;
     }
+
+    public void onDamage(){
+        anim.SetTrigger("damaged");
+    }
 }

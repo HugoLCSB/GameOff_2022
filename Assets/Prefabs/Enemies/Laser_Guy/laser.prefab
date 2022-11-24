@@ -109,6 +109,7 @@ MonoBehaviour:
   intendedTarget:
     serializedVersion: 2
     m_Bits: 128
+  colliderToUse: {fileID: 0}
 --- !u!1 &2506826769655548949
 GameObject:
   m_ObjectHideFlags: 0

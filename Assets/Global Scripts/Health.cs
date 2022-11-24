@@ -9,6 +9,7 @@ public class Health : MonoBehaviour
     [SerializeField] private float damageReductionPercent = 0;
     [SerializeField] private bool isDamageable = true;
     [SerializeField] private bool applyKnockBack = true;
+    [SerializeField] private UnityEvent onDamaged;
     [SerializeField] private UnityEvent onHealthZero;
 
     public void ChangeHp(float healthAmount){
@@ -23,6 +24,8 @@ public class Health : MonoBehaviour
     private void SetHp(float amount){
         if(amount < 0){
             hp += amount - (amount * damageReductionPercent);
+
+            onDamaged.Invoke();
         } 
         else{
             hp += amount;

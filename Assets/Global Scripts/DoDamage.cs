@@ -7,10 +7,16 @@ public class DoDamage : MonoBehaviour
     [SerializeField] private float damageAmount = 1;
     [SerializeField] private float attackKnockBack = 5;
     [SerializeField] private LayerMask intendedTarget;
+    [SerializeField] private Collider2D colliderToUse;
     private bool isEnabled = true;
 
-    private void OnCollisionEnter2D(Collision2D other) {
-        ApplyDamage(other.gameObject, other.contacts[0].point);
+    private void OnCollisionEnter2D(Collision2D col) {
+        if(colliderToUse != null && col.otherCollider == colliderToUse){
+            ApplyDamage(col.gameObject, col.contacts[0].point);
+        }
+        else{
+             ApplyDamage(col.gameObject, col.contacts[0].point);
+        }
     }
 
     /*private void OnTriggerEnter2D(Collider2D other) {

@@ -7,6 +7,7 @@ public class FlyingEnemy : Enemy
 {
     [SerializeField] private float nextWayPointDistance = 3f;
     [SerializeField] private float attackSpeed = 200;
+    [SerializeField] private float attackDashForce = 200;
     [SerializeField] private float attackDistance = 3;
     [SerializeField] private float attackDelay = 3;
     [SerializeField] private float idleTime = 3;
@@ -14,6 +15,7 @@ public class FlyingEnemy : Enemy
     [SerializeField] private float aggroDistance = 10;
     [SerializeField] private bool aggroOnBothSides = false;
 
+    [SerializeField] private Collider2D spearAreaOfEffect;
     [SerializeField] private GameObject target;
 
     private Path path;
@@ -31,6 +33,8 @@ public class FlyingEnemy : Enemy
         seeker = GetComponent<Seeker>();
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+
+        spearAreaOfEffect.enabled = false;
 
         InvokeRepeating("UpdatePath", 0f, 0.5f);
     }
@@ -53,6 +57,9 @@ public class FlyingEnemy : Enemy
                 flip.SetTarget(null);
             }
         }
+
+        //reset rotation
+        transform.rotation =  Quaternion.Euler (new Vector3(0f,0f,0f));
 
         //change animation
         anim.SetTrigger("go" + nextState.ToString());
@@ -78,36 +85,30 @@ public class FlyingEnemy : Enemy
     }
     
     protected override void DoAttack(){
-        /*if(Time.time > nextTime){
-            //direction of attack
-            nextDir = (target.transform.position - transform.position);
-
-            //I wanted this to be infinite, so it only reset when he hits something
-            nextTime = Time.time + 10000000;
-        }
-        //do attack
-        rb.velocity = new Vector2(nextDir.normalized.x * attackSpeed, rb.velocity.y);*/
-
         if(Vector2.Distance(transform.position, target.transform.position) <= attackDistance){
             if(Time.time > nextTime){
                 //direction of attack
                 RotateTowards();
 
+                rb.AddForce((target.transform.position - transform.position).normalized * attackDashForce);
                 anim.SetTrigger("attackSpear");
-
+                spearAreaOfEffect.enabled = true;
 
                 //I wanted this to be infinite, so it only reset when he hits something
                 nextTime = Time.time + attackDelay;
             }
             else if(!anim.GetCurrentAnimatorStateInfo(0).IsName("FlyEnemy_attack"))
-            {
+            {   
+                //reset rotation
                 transform.rotation =  Quaternion.Euler (new Vector3(0f,0f,0f));
+                spearAreaOfEffect.enabled = false;
             }
         }
-    }
-
-    IEnumerator AttackFinish(){
-        yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length+anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
+        else{
+             //reset rotation
+                transform.rotation =  Quaternion.Euler (new Vector3(0f,0f,0f));
+                spearAreaOfEffect.enabled = false;
+        }
     }
 
     private void RotateTowards(){
@@ -163,6 +164,9 @@ public class FlyingEnemy : Enemy
 
                     //reset timer
                     nextTime = Time.time + attackDelay;
+                }
+                else if(other.gameObject == target){    //some recoil when spear attack connects
+                    rb.AddForce((transform.position - target.transform.position).normalized * attackDashForce);
                 }
             }
         }
