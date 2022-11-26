@@ -246,6 +246,6 @@ MonoBehaviour:
   effects: []
   lifeTime: 0.1
   ownVelocity: 0
-  intendedTarget:
+  intendedTargets:
     serializedVersion: 2
     m_Bits: 0

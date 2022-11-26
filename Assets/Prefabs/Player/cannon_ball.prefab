@@ -163,6 +163,7 @@ MonoBehaviour:
   intendedTarget:
     serializedVersion: 2
     m_Bits: 256
+  colliderToUse: {fileID: 0}
 --- !u!1001 &3073136088792471257
 PrefabInstance:
   m_ObjectHideFlags: 0

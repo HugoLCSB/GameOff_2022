@@ -769,7 +769,7 @@ MonoBehaviour:
   - {x: 0.18312263, y: -0.47141826, z: 0}
   m_ShapePathHash: 2142651751
   m_Mesh: {fileID: 0}
-  m_InstanceId: -1528252
+  m_InstanceId: -2059598
 --- !u!1 &3968618143374052398
 GameObject:
   m_ObjectHideFlags: 0
@@ -916,7 +916,7 @@ MonoBehaviour:
   - {x: 2.1900833, y: -0.24338293, z: 0}
   m_ShapePathHash: -480862375
   m_Mesh: {fileID: 0}
-  m_InstanceId: -1528268
+  m_InstanceId: -2059614
 --- !u!1 &4258403879465935776
 GameObject:
   m_ObjectHideFlags: 0
@@ -1009,7 +1009,7 @@ MonoBehaviour:
   m_NormalMapDistance: 3
   m_NormalMapQuality: 2
   m_UseNormalMap: 0
-  m_ShadowIntensityEnabled: 1
+  m_ShadowIntensityEnabled: 0
   m_ShadowIntensity: 1
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
@@ -1744,7 +1744,7 @@ MonoBehaviour:
   - {x: -0.3871497, y: -1.4732769, z: 0}
   m_ShapePathHash: -872093468
   m_Mesh: {fileID: 0}
-  m_InstanceId: -1528234
+  m_InstanceId: -2059580
 --- !u!95 &9009820326997834067
 Animator:
   serializedVersion: 4
