@@ -31,13 +31,14 @@ public class CameraController : MonoBehaviour
     }*/
     [SerializeField] private WayPoint[] stoppingAreas;    //points where the camera should stop
 
+    private float posZ;
 
-    private bool atWayPointX = false;
+    /*private bool atWayPointX = false;
     private float lockPosXAt;
     private bool dirNegativeOnX = false;
     private bool atWayPointY = false;
     private float lockPosYAt;
-    private bool dirNegativeOnY = false;
+    private bool dirNegativeOnY = false;*/
 
     private float lockXMin; private bool xMin;
     private float lockXMax; private bool xMax;
@@ -46,6 +47,7 @@ public class CameraController : MonoBehaviour
     private float lockYMax; private bool yMax;
 
     private void Start() {
+        posZ = transform.position.z;
         ActivateWayPoints();
     }
 
@@ -56,7 +58,7 @@ public class CameraController : MonoBehaviour
         HandleWayPoints();
 
         transform.position = Vector3.Lerp(transform.position, limited, 1 - smoothing);
-        transform.position = new Vector3(transform.position.x,transform.position.y,-10);
+        transform.position = new Vector3(transform.position.x,transform.position.y, posZ);
     }
 
     private Vector3 GetPosToTarget(){
