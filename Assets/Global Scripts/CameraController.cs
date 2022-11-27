@@ -39,6 +39,10 @@ public class CameraController : MonoBehaviour
     private float lockPosYAt;
     private bool dirNegativeOnY = false;
 
+    private void Start() {
+        ActivateWayPoints();
+    }
+
     private void FixedUpdate()
     {
         Vector3 limited = LimitMovement(GetPosToTarget());
@@ -128,6 +132,9 @@ public class CameraController : MonoBehaviour
     }
 
     public void RemoveWayPoint(int index){
+        //deactivate wayPoint
+        stoppingAreas[index].point.gameObject.SetActive(false);
+
         if(stoppingAreas.Length >= index+1){
             WayPoint[] newStoppingAreas = new WayPoint[stoppingAreas.Length-1];
             for(int i = 0; i < stoppingAreas.Length; i++){
@@ -156,6 +163,29 @@ public class CameraController : MonoBehaviour
                 }
             }
             stoppingAreas = newStoppingAreas;
+        }
+
+        //activate the waypoint
+        newPoint.gameObject.SetActive(true);
+    }
+
+    public void SwitchWayPoint(WayPoint newPoint){
+        for(int i = 0; i < stoppingAreas.Length; i++){
+            if((newPoint.useX && stoppingAreas[i].useX) ||
+                    (newPoint.useY && stoppingAreas[i].useY)){
+                        
+                stoppingAreas[i].point.gameObject.SetActive(false);
+                newPoint.gameObject.SetActive(true);
+                stoppingAreas[i] = newPoint;
+            }
+        }
+    }
+
+    private void ActivateWayPoints(){
+        if(stoppingAreas.Length != 0){
+            for(int i = 0; i < stoppingAreas.Length; i++){
+                stoppingAreas[i].point.gameObject.SetActive(true);
+            }
         }
     }
 
