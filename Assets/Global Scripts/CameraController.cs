@@ -39,6 +39,12 @@ public class CameraController : MonoBehaviour
     private float lockPosYAt;
     private bool dirNegativeOnY = false;
 
+    private float lockXMin; private bool xMin;
+    private float lockXMax; private bool xMax;
+
+    private float lockYMin; private bool yMin; 
+    private float lockYMax; private bool yMax;
+
     private void Start() {
         ActivateWayPoints();
     }
@@ -77,7 +83,7 @@ public class CameraController : MonoBehaviour
         limited.y =  Mathf.Clamp(target.y, limitsY.x + centerPoint.y, limitsY.y + centerPoint.y);
 
         //dont move if target is beyond wayPoint
-        if(atWayPointX){
+        /*if(atWayPointX){
             if((dirNegativeOnX && target.x <= lockPosXAt) || (!dirNegativeOnX && target.x >= lockPosXAt)){
                 limited.x = lockPosXAt;
             }
@@ -86,7 +92,26 @@ public class CameraController : MonoBehaviour
             if((dirNegativeOnY && target.y <= lockPosYAt) || (!dirNegativeOnY && target.y >= lockPosYAt)){
                 limited.y = lockPosYAt;
             }
+        }*/
+
+
+        if(xMax && target.x >= lockXMax){
+            limited.x = lockXMax;
         }
+        if(xMin && target.x <= lockXMin){
+            limited.x = lockXMin;
+        }
+        if(yMax && target.y >= lockYMax){
+            limited.y = lockYMax;
+        }
+        if(yMin && target.y <= lockYMin){
+            limited.y = lockYMin;
+        }
+
+
+
+
+
         return limited;
     }
 
@@ -95,7 +120,34 @@ public class CameraController : MonoBehaviour
             for(int i = 0; i < stoppingAreas.Length; i++){
                 WayPoint currPoint = stoppingAreas[i];
                 
+
                 if(currPoint.useX){
+                    if(!currPoint.negativeDirX && transform.position.x >= currPoint.point.position.x){
+                        lockXMax = currPoint.point.position.x;
+                        xMax = true;
+                    }
+                    else if(currPoint.negativeDirX && transform.position.x <= currPoint.point.position.x){
+                        lockXMin = currPoint.point.position.x;
+                        xMin = true;
+                    }
+                }
+                else if(currPoint.useY){
+                    if(!currPoint.negativeDirY && transform.position.y >= currPoint.point.position.y){
+                        lockYMax = currPoint.point.position.y;
+                        yMax = true;
+                    }
+                    else if(currPoint.negativeDirY && transform.position.y <= currPoint.point.position.y){
+                        lockYMin = currPoint.point.position.y;
+                        yMin = true;
+                    }
+                }
+
+
+
+
+
+
+                /*if(currPoint.useX){
                     if((currPoint.negativeDirX && transform.position.x <= currPoint.point.position.x) || 
                         (!currPoint.negativeDirX && transform.position.x >= currPoint.point.position.x)){
                             dirNegativeOnX = false;
@@ -120,20 +172,40 @@ public class CameraController : MonoBehaviour
                         atWayPointY = false;
                         dirNegativeOnX = false;
                     }
-                }
+                }*/
             }
         }
         else{
-            atWayPointX = false;
+            /*atWayPointX = false;
             dirNegativeOnX = false;
             atWayPointY = false;
-            dirNegativeOnX = false;
+            dirNegativeOnX = false;*/
         }
     }
 
-    public void RemoveWayPoint(int index){
+    public void RemoveWayPoint(WayPoint pointToRemove){
+        int index = IsObjectInArray(stoppingAreas ,pointToRemove);
+
         //deactivate wayPoint
         stoppingAreas[index].point.gameObject.SetActive(false);
+
+
+        if(stoppingAreas[index].useX){
+            if(!stoppingAreas[index].negativeDirX){
+                xMax = false;
+            }
+            else{
+                xMin = false;
+            }
+        }
+        else{
+            if(!stoppingAreas[index].negativeDirY){
+                yMax = false;
+            }
+            else{
+                yMin = false;
+            }
+        }
 
         if(stoppingAreas.Length >= index+1){
             WayPoint[] newStoppingAreas = new WayPoint[stoppingAreas.Length-1];
@@ -147,38 +219,56 @@ public class CameraController : MonoBehaviour
             }
             stoppingAreas = newStoppingAreas;
         }
+
+        /*WayPoint[] newStoppingAreas = new WayPoint[stoppingAreas.Length-1];
+        for(int i = 0; i < stoppingAreas.Length-1; i++){
+            newStoppingAreas[i] = stoppingAreas[i];
+        }
+        stoppingAreas = newStoppingAreas;*/
     }
 
     public void SetNewWayPoint(WayPoint newPoint/*Transform point, bool useX, bool negativeDirX,
                                                  bool useY, bool negativeDirY*/){
-        if(stoppingAreas != null){
-            //WayPoint newPoint = new WayPoint(point, useX, negativeDirX, useY, negativeDirY);
-            WayPoint[] newStoppingAreas = new WayPoint[stoppingAreas.Length+1];
-            for(int i = 0; i < stoppingAreas.Length+1; i++){
-                if(i < stoppingAreas.Length){
-                    newStoppingAreas[i] = stoppingAreas[i];
+        if(IsObjectInArray(stoppingAreas, newPoint) == -1){
+            if(stoppingAreas != null){
+                //WayPoint newPoint = new WayPoint(point, useX, negativeDirX, useY, negativeDirY);
+                WayPoint[] newStoppingAreas = new WayPoint[stoppingAreas.Length+1];
+                for(int i = 0; i < stoppingAreas.Length+1; i++){
+                    if(i < stoppingAreas.Length){
+                        newStoppingAreas[i] = stoppingAreas[i];
+                    }
+                    else{
+                        newStoppingAreas[i] = newPoint;
+                    }
                 }
-                else{
-                    newStoppingAreas[i] = newPoint;
-                }
+                stoppingAreas = newStoppingAreas;
             }
-            stoppingAreas = newStoppingAreas;
-        }
 
-        //activate the waypoint
-        newPoint.gameObject.SetActive(true);
+            //activate the waypoint
+            newPoint.gameObject.SetActive(true);
+        }
     }
 
     public void SwitchWayPoint(WayPoint newPoint){
-        for(int i = 0; i < stoppingAreas.Length; i++){
+        for(int i = stoppingAreas.Length; i >= 0; i--){  //start from last and pick the first one that matches
             if((newPoint.useX && stoppingAreas[i].useX) ||
                     (newPoint.useY && stoppingAreas[i].useY)){
-                        
+
                 stoppingAreas[i].point.gameObject.SetActive(false);
                 newPoint.gameObject.SetActive(true);
                 stoppingAreas[i] = newPoint;
             }
         }
+    }
+
+    //returns the index of the object if it is in the array and (-1) if not
+    private int IsObjectInArray(Array array, object o){
+        for(int i = 0; i < array.Length; i++){
+            if(array.GetValue(i) == o){
+                return i;
+            }
+        }
+        return -1;
     }
 
     private void ActivateWayPoints(){

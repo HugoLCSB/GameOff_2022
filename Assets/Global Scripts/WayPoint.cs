@@ -13,13 +13,20 @@ public class WayPoint : MonoBehaviour{
     public float deactivationDistance;
     public UnityEvent NextWayPoint;
 
+    private bool done = false;
+
     private void Start() {
         
     }
 
     private void Update() {
-        if(deactivationDistance != 0 && CheckDistance()){
+        if(deactivationDistance != 0 && !done && CheckDistance()){
             NextWayPoint.Invoke();
+            done = true;
+        }
+
+        if(!CheckDistance()){
+            done = false;
         }
     }
 
