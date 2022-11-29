@@ -4968,6 +4968,7 @@ GameObject:
   - component: {fileID: 1906753094916168407}
   - component: {fileID: 1906753094916168404}
   - component: {fileID: 1906753094916168402}
+  - component: {fileID: 541455479}
   - component: {fileID: 541455478}
   m_Layer: 0
   m_Name: lamp
@@ -5110,9 +5111,28 @@ SpringJoint2D:
   m_Anchor: {x: -0.023123264, y: 0.75325394}
   m_ConnectedAnchor: {x: -0.00013399124, y: -0.021260262}
   m_AutoConfigureDistance: 1
-  m_Distance: 0.46252438
+  m_Distance: 0.46252534
   m_DampingRatio: 1
   m_Frequency: 1
+--- !u!232 &541455479
+DistanceJoint2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1906753094916168393}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_EnableCollision: 1
+  m_ConnectedRigidBody: {fileID: 1906753095045134969}
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_AutoConfigureConnectedAnchor: 0
+  m_Anchor: {x: 0, y: 0}
+  m_ConnectedAnchor: {x: 0, y: 0}
+  m_AutoConfigureDistance: 0
+  m_Distance: 2
+  m_MaxDistanceOnly: 1
 --- !u!114 &541455478
 MonoBehaviour:
   m_ObjectHideFlags: 0
