@@ -32,6 +32,7 @@ public class CharacterMovement : MonoBehaviour
     private bool grounded = false;
     private float localScaleX;
     private int counter;
+    private bool isGamePaused = false;
     private Rigidbody2D rb;
     private Animator anim;
 
@@ -55,7 +56,9 @@ public class CharacterMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        InputManager();
+        if(!isGamePaused){
+            InputManager();
+        }
 
         if(transform.localScale.x != localScaleX){
             //anim.SetTrigger("flip");
@@ -207,5 +210,13 @@ public class CharacterMovement : MonoBehaviour
 
     public void onDamage(){
         anim.SetTrigger("damaged");
+    }
+
+    public void PauseUnPause(bool b){
+        /*if(!isGamePaused){
+            isGamePaused = true;
+        }else{ isGamePaused = false; }*/
+
+        isGamePaused = b;
     }
 }

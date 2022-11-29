@@ -9,6 +9,8 @@ public class RotateToMousePos : MonoBehaviour
     [SerializeField] private Vector2 leftAngleLimits = Vector2.zero;
     [SerializeField] private float mouseAngle;   //just to show mouse angle in editor
 
+    private bool isPaused = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -18,7 +20,9 @@ public class RotateToMousePos : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Rotate();
+        if(!isPaused){
+            Rotate();
+        }
 
         /*if(objectsToRotate.Length != 0){
             for(int i = 0; i < objectsToRotate.Length; i++){
@@ -94,4 +98,8 @@ public class RotateToMousePos : MonoBehaviour
             objectToRotate.rotation =  Quaternion.Euler (new Vector3(0f,0f,angle-180));
         }
     }*/
+
+    public void PauseUnPause(bool b){
+        isPaused = b;
+    }
 }
