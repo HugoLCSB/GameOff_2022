@@ -74,6 +74,11 @@ public class CharacterMovement : MonoBehaviour
         if((horizontalMove != 0 || jump) && (!isShooting || isOverHeating)){
             anim.SetBool("isMoving", true);
             anim.SetFloat("moveDir", horizontalMove);
+
+            if(grounded){
+                PlaySound("Walk");
+            }
+
             controller.Move(horizontalMove * runSpeed * Time.fixedDeltaTime, false, jump);
         }
         else{ anim.SetBool("isMoving", false); }
@@ -87,6 +92,7 @@ public class CharacterMovement : MonoBehaviour
         grounded = true;
         jump = false;
         anim.SetBool("grounded", true);
+        PlaySound("Landing");
     }
     void UnGrounded() { 
         grounded = false; 

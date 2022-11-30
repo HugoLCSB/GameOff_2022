@@ -9,14 +9,14 @@ public class AudioPlayer : MonoBehaviour
 
     [System.Serializable]
     private class AudioForAction{
-        public AudioSource source;
         public string actionName;
         public float cooldownTime;
         public AudioClip[] sounds;
+        public AudioSource source;
     }
 
-    //private AudioSource source;
     private float nextTime = 0;
+    private string lastSoundName;
 
     // Start is called before the first frame update
     void Start()
@@ -31,7 +31,7 @@ public class AudioPlayer : MonoBehaviour
     }
 
     public void PlaySound(string name){
-        if(Time.time > nextTime){
+        if(((name == lastSoundName) && (Time.time > nextTime)) || (!(name == lastSoundName))){
             for(int i = 0; i < audioList.Length; i++){
                 if(audioList[i].actionName == name){
                     PlayRandom(i);
@@ -46,6 +46,7 @@ public class AudioPlayer : MonoBehaviour
             int num = Random.Range(0, audioList[index].sounds.Length);
             audioList[index].source.clip = audioList[index].sounds[num];
             audioList[index].source.Play();
+            lastSoundName = audioList[index].actionName;
         }
     }
 }
