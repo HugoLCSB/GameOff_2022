@@ -10,10 +10,10 @@ public class PauseGame : MonoBehaviour
     [SerializeField] private UnityEvent[] actionOnUnpause;*/
     [SerializeField] private GameObject[] objectsToPause;
 
-    private float regularTimeScale;
+    //private float regularTimeScale;
 
-    private void Start() {
-        regularTimeScale = Time.timeScale;
+    private void Awake() {
+        Time.timeScale = 1;
     }
 
     public void Pause(){
@@ -30,7 +30,7 @@ public class PauseGame : MonoBehaviour
     }
 
     public void UnPause(){
-        Time.timeScale = regularTimeScale;
+        Time.timeScale = 1;
         /*for(int i = 0; i < actionOnUnpause.Length; i++){
             actionOnUnpause[i].Invoke();
         }*/
