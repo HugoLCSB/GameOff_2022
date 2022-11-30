@@ -8,6 +8,7 @@ public class CameraController : MonoBehaviour
     [SerializeField] private Transform container;
     [SerializeField] private float smoothing = 0.1f;
     [SerializeField] private bool takeChildrenIntoAccount = true;   //if you want to target more than one object
+    [SerializeField] private bool useCursorAsTargetInstead = false;
     [SerializeField] private Vector2 centerPoint;   //(x, y)
     [SerializeField] private Vector2 limitsX;   //(min, max)
     [SerializeField] private Vector2 limitsY;   //(min, max)
@@ -71,6 +72,10 @@ public class CameraController : MonoBehaviour
                 sum += target.gameObject.transform.position;
             }
             sum = sum / (container.childCount + 1);
+        }
+        else if(useCursorAsTargetInstead){
+            Vector2 mouseOnScreen = (Vector2)Camera.main.ScreenToViewportPoint(Input.mousePosition);
+            sum = new Vector2(mouseOnScreen.x*2 + offset.x, mouseOnScreen.y*2 + offset.y);
         }
         else{
             //Get the goal accounting for offset

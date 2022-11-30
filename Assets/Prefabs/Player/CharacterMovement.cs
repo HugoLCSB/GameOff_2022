@@ -35,22 +35,24 @@ public class CharacterMovement : MonoBehaviour
     private bool isGamePaused = false;
     private Rigidbody2D rb;
     private Animator anim;
+    private AudioPlayer audio;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+
+        if(TryGetComponent<AudioPlayer>(out AudioPlayer a)){
+            audio = a;
+        }
+
         variableFireRate = fireRate;
         localScaleX = transform.localScale.x;
 
         //Add a listener to the new Event. Calls action method when invoked
         controller.OnLandEvent.AddListener(Grounded);
         controller.OffLandEvent.AddListener(UnGrounded);
-
-        //SetUp the death event
-        if (DeathEvent == null)
-            DeathEvent = new UnityEvent();
     }
 
     // Update is called once per frame
@@ -165,6 +167,7 @@ public class CharacterMovement : MonoBehaviour
         if(arm.TryGetComponent<Animator>(out Animator armAnim)){
             armAnim.SetTrigger("shoot");
         }
+        audio.PlaySound("Fire");
 
         //Get the Screen positions of the object
         Vector2 positionOnScreen = Camera.main.WorldToViewportPoint (transform.position);
@@ -206,6 +209,12 @@ public class CharacterMovement : MonoBehaviour
         yield return new WaitForSeconds(time);
         isShooting = false;
         isOverHeating = false;
+    }
+
+    private void PlaySound(string soundName){
+        if(audio != null){
+            audio.PlaySound(soundName);
+        }
     }
 
     public void onDamage(){
