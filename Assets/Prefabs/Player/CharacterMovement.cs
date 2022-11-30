@@ -22,7 +22,6 @@ public class CharacterMovement : MonoBehaviour
     [SerializeField] private float overHeatingTime = 3f; //number of shots before weapon overHeats
     [SerializeField] private bool canJump = true;   //whether or not the player can jump
 
-    public UnityEvent DeathEvent;
     private float horizontalMove;
     private float variableFireRate;
     private bool jump = false;
@@ -35,7 +34,7 @@ public class CharacterMovement : MonoBehaviour
     private bool isGamePaused = false;
     private Rigidbody2D rb;
     private Animator anim;
-    private AudioPlayer audio;
+    private AudioPlayer sound;
 
     // Start is called before the first frame update
     void Start()
@@ -44,7 +43,7 @@ public class CharacterMovement : MonoBehaviour
         anim = GetComponent<Animator>();
 
         if(TryGetComponent<AudioPlayer>(out AudioPlayer a)){
-            audio = a;
+            sound = a;
         }
 
         variableFireRate = fireRate;
@@ -167,7 +166,7 @@ public class CharacterMovement : MonoBehaviour
         if(arm.TryGetComponent<Animator>(out Animator armAnim)){
             armAnim.SetTrigger("shoot");
         }
-        audio.PlaySound("Fire");
+        PlaySound("Fire");
 
         //Get the Screen positions of the object
         Vector2 positionOnScreen = Camera.main.WorldToViewportPoint (transform.position);
@@ -212,9 +211,10 @@ public class CharacterMovement : MonoBehaviour
     }
 
     private void PlaySound(string soundName){
-        if(audio != null){
-            audio.PlaySound(soundName);
+        if(sound != null){
+            sound.PlaySound(soundName);
         }
+        else{ Debug.Log("no AudioPlayer component is attacked"); }
     }
 
     public void onDamage(){
