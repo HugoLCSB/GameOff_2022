@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class HealthIndicator : MonoBehaviour
 {
-    //[SerializeField] private string tagHealthToShow;
+   //[SerializeField] private string tagHealthToShow;
     [SerializeField] private float startHealth = 6;
     [SerializeField] private Sprite full;
     [SerializeField] private Sprite half;
