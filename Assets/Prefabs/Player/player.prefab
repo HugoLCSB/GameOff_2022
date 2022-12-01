@@ -769,7 +769,7 @@ MonoBehaviour:
   - {x: 0.18312263, y: -0.47141826, z: 0}
   m_ShapePathHash: 2142651751
   m_Mesh: {fileID: 0}
-  m_InstanceId: -1572
+  m_InstanceId: -456452
 --- !u!1 &3968618143374052398
 GameObject:
   m_ObjectHideFlags: 0
@@ -916,7 +916,7 @@ MonoBehaviour:
   - {x: 2.1900833, y: -0.24338293, z: 0}
   m_ShapePathHash: -480862375
   m_Mesh: {fileID: 0}
-  m_InstanceId: -1586
+  m_InstanceId: -456466
 --- !u!1 &4258403879465935776
 GameObject:
   m_ObjectHideFlags: 0
@@ -1661,7 +1661,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 9009820326769577074}
   firePoint: {fileID: 5985607033812689532}
-  bullet: {fileID: 8310871646499747182, guid: 49e7b8a778f85a94b86a7e41f760c01f, type: 3}
+  bullet: {fileID: 8310871646499747182, guid: e70e0b54de425e944b20834e58dbe6e2, type: 3}
   arm: {fileID: 7594938036772166349}
   runSpeed: 35
   jumpDelay: 0.4
@@ -1844,7 +1844,7 @@ MonoBehaviour:
   - {x: -0.3871497, y: -1.4732769, z: 0}
   m_ShapePathHash: -872093468
   m_Mesh: {fileID: 0}
-  m_InstanceId: -1548
+  m_InstanceId: -456428
 --- !u!95 &9009820326997834067
 Animator:
   serializedVersion: 4

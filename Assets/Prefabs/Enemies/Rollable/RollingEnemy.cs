@@ -10,6 +10,7 @@ public class RollingEnemy : Enemy
     [SerializeField] private float attackDelay = 3;
     [SerializeField] private float aggroDistance = 10;
     [SerializeField] private bool aggroOnBothSides = false;
+    [SerializeField] private bool aggroWhenHit = false;
     [SerializeField] private bool keepAggro = false;
     [SerializeField] private bool canDoDamageWhileStopped = true;
     [SerializeField] private bool immuneWhileAttacking = false;
@@ -85,7 +86,7 @@ public class RollingEnemy : Enemy
         else{ anim.SetBool("isMoving", false); }
 
         //check for transition to next state
-            if(keepAggro && hasAggroed){
+            if(keepAggro && hasAggroed || aggroWhenHit && isAggro){
                 isAggro = true;
             }
             else if(aggroOnBothSides){
@@ -110,7 +111,7 @@ public class RollingEnemy : Enemy
     protected override void DoStunned(){
         if(Time.time > nextTime){
             //check for transition to next state
-            if(keepAggro && hasAggroed){
+            if(keepAggro && hasAggroed || aggroWhenHit && isAggro){
                 isAggro = true;
             }
             else if(aggroOnBothSides){
@@ -135,6 +136,8 @@ public class RollingEnemy : Enemy
             }
 
             if(other.gameObject.layer == LayerMask.NameToLayer("projectiles")){
+                if(aggroWhenHit){ isAggro = true; }
+
                 if(enemyState != EnemyState.Attack){
                     isStunned = true;
 

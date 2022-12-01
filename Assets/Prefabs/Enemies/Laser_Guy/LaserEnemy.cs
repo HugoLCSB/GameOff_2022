@@ -11,6 +11,7 @@ public class LaserEnemy : Enemy
     [SerializeField] private float attackDistance = 3;
     [SerializeField] private float aggroDistance = 10;
     [SerializeField] private bool aggroOnBothSides = false;
+    [SerializeField] private bool aggroWhenHit = false;
     [SerializeField] private bool keepAggro = false;
     [SerializeField] private bool immuneWhileAttacking = false;
 
@@ -86,7 +87,7 @@ public class LaserEnemy : Enemy
         else{ anim.SetBool("isMoving", false); }
 
         //check for transition to next state
-        if(keepAggro && hasAggroed){
+        if(keepAggro && hasAggroed || aggroWhenHit && isAggro){
             isAggro = true;
         }
         else if(aggroOnBothSides){
@@ -137,7 +138,7 @@ public class LaserEnemy : Enemy
     protected override void DoStunned(){
         if(Time.time > nextTime){
             //check for transition to next state
-            if(keepAggro && hasAggroed){
+            if(keepAggro && hasAggroed || aggroWhenHit && isAggro){
                 isAggro = true;
             }
             else if(aggroOnBothSides){
@@ -161,6 +162,8 @@ public class LaserEnemy : Enemy
             if(other.gameObject.layer == LayerMask.NameToLayer("projectiles")){
                 //hit some obstacle while on Attack mode
                 //Debug.Log(LayerMask.LayerToName(other.gameObject.layer));
+
+                if(aggroWhenHit){ isAggro = true; }
             
                 //rb.velocity = new Vector2(0,rb.velocity.y);
                 isStunned = true;
