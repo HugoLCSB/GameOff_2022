@@ -769,7 +769,7 @@ MonoBehaviour:
   - {x: 0.18312263, y: -0.47141826, z: 0}
   m_ShapePathHash: 2142651751
   m_Mesh: {fileID: 0}
-  m_InstanceId: -1564
+  m_InstanceId: -1572
 --- !u!1 &3968618143374052398
 GameObject:
   m_ObjectHideFlags: 0
@@ -916,7 +916,7 @@ MonoBehaviour:
   - {x: 2.1900833, y: -0.24338293, z: 0}
   m_ShapePathHash: -480862375
   m_Mesh: {fileID: 0}
-  m_InstanceId: -1578
+  m_InstanceId: -1586
 --- !u!1 &4258403879465935776
 GameObject:
   m_ObjectHideFlags: 0
@@ -1181,7 +1181,8 @@ GameObject:
   - component: {fileID: 6420028256371988499}
   - component: {fileID: 5864104220536434495}
   - component: {fileID: 4290454944035756867}
-  m_Layer: 0
+  - component: {fileID: 1358133408}
+  m_Layer: 10
   m_Name: Canon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1277,6 +1278,32 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!61 &1358133408
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7594938036772166349}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.0077897757, y: -0.6845753}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.49682054, y: 0.705}
+    oldSize: {x: 5.12, y: 5.12}
+    newSize: {x: 1, y: 2}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.51504457, y: 1.1969693}
+  m_EdgeRadius: 0
 --- !u!1 &7891363904310636391
 GameObject:
   m_ObjectHideFlags: 0
@@ -2159,7 +2186,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: d9123d7a1e2c6c24ab831eee94f38308, type: 3}
     source: {fileID: 1778849731}
   - actionName: Walk
-    cooldownTime: 0.2
+    cooldownTime: 0.28
     sounds:
     - {fileID: 8300000, guid: 06a3c92fd64dea64b9a79578a678a1e4, type: 3}
     - {fileID: 8300000, guid: f44eae93c8925dc49bd0484e76acf7ea, type: 3}

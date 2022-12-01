@@ -10,13 +10,16 @@ public class RollingEnemy : Enemy
     [SerializeField] private float attackDelay = 3;
     [SerializeField] private float aggroDistance = 10;
     [SerializeField] private bool aggroOnBothSides = false;
+    [SerializeField] private bool keepAggro = false;
     [SerializeField] private bool canDoDamageWhileStopped = true;
     [SerializeField] private bool immuneWhileAttacking = false;
 
     [SerializeField] private GameObject target;
 
     private Vector2 nextDir = Vector2.zero;
+    private bool hasAggroed = false;
     private float nextTime = 0;
+
     private Rigidbody2D rb;
     private Animator anim;
     private Health health;
@@ -58,6 +61,9 @@ public class RollingEnemy : Enemy
             else{ damage.isOn(true); } //when attack
         }
 
+        //setting up continuos aggro from this point on
+        if(isAggro){ hasAggroed = true; }
+
         //change animation
         anim.SetTrigger("go" + nextState.ToString());
         Debug.Log("NOW_ON -> " + nextState);
@@ -72,16 +78,21 @@ public class RollingEnemy : Enemy
             nextTime = Time.time + Random.Range(idleTime-(idleTime*0.5f), idleTime+(idleTime*0.5f));
         } 
 
-        if(aggroOnBothSides){
-            if(CheckAggro(Vector2.right, aggroDistance, target)){ isAggro = true; }
-            else{ isAggro = CheckAggro(Vector2.left, aggroDistance, target); }
-        }else{ isAggro = CheckAggro(nextDir, aggroDistance, target);}    //only on the side he's looking/ walking towards
-
         //move
         rb.velocity = new Vector2(nextDir.x * idleWalkSpeed, rb.velocity.y);
 
         if(nextDir.x != 0){ anim.SetBool("isMoving", true); }
         else{ anim.SetBool("isMoving", false); }
+
+        //check for transition to next state
+            if(keepAggro && hasAggroed){
+                isAggro = true;
+            }
+            else if(aggroOnBothSides){
+                if(CheckAggro(Vector2.right, aggroDistance, target)){ isAggro = true; }
+                else{ isAggro = CheckAggro(Vector2.left, aggroDistance, target); }
+            }
+            else{ isAggro = CheckAggro(nextDir, aggroDistance, target);}    //only on the side he's looking/ walking towards
     }
 
     protected override void DoAttack(){
@@ -98,10 +109,15 @@ public class RollingEnemy : Enemy
 
     protected override void DoStunned(){
         if(Time.time > nextTime){
-            if(aggroOnBothSides){
+            //check for transition to next state
+            if(keepAggro && hasAggroed){
+                isAggro = true;
+            }
+            else if(aggroOnBothSides){
                 if(CheckAggro(Vector2.right, aggroDistance, target)){ isAggro = true; }
                 else{ isAggro = CheckAggro(Vector2.left, aggroDistance, target); }
-            }else{ isAggro = CheckAggro(nextDir, aggroDistance, target);}    //only on the side he's looking/ walking towards
+            }
+            else{ isAggro = CheckAggro(nextDir, aggroDistance, target);}    //only on the side he's looking/ walking towards
 
             isStunned = false;
         }
@@ -118,8 +134,16 @@ public class RollingEnemy : Enemy
                 else{ nextDir = Vector2.right; }
             }
 
-            if(enemyState == EnemyState.Attack){
-                if(other.gameObject.layer != LayerMask.NameToLayer("projectiles")){
+            if(other.gameObject.layer == LayerMask.NameToLayer("projectiles")){
+                if(enemyState != EnemyState.Attack){
+                    isStunned = true;
+
+                    //reset timer
+                    nextTime = Time.time + attackDelay;
+                }
+            }
+            else{
+                if(enemyState == EnemyState.Attack){
                     //hit some obstacle while on Attack mode
                     Debug.Log(LayerMask.LayerToName(other.gameObject.layer));
                 
