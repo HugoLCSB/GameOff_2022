@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using Pathfinding;
 
 public class FlyingEnemy : Enemy
@@ -19,6 +20,8 @@ public class FlyingEnemy : Enemy
 
     [SerializeField] private Collider2D spearAreaOfEffect;
     [SerializeField] private GameObject target;
+
+    [SerializeField] private UnityEvent attackEvent;
 
     private Path path;
     private int currentWaypoint = 0;
@@ -103,6 +106,7 @@ public class FlyingEnemy : Enemy
 
                 rb.AddForce((target.transform.position - transform.position).normalized * attackDashForce);
                 anim.SetTrigger("attackSpear");
+                attackEvent.Invoke();
                 spearAreaOfEffect.enabled = true;
 
                 //I wanted this to be infinite, so it only reset when he hits something
