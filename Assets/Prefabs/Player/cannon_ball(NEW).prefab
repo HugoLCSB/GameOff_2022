@@ -139,13 +139,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effects:
-  - {fileID: 5673210672232734049, guid: d64a7580ca01fcb4c8e527e6c0a76659, type: 3}
   - {fileID: 1343825427626578901, guid: 975e100de6944e24aad85a6b86ef0a9c, type: 3}
   lifeTime: 2
   ownVelocity: 0
   intendedTargets:
     serializedVersion: 2
     m_Bits: 256
+  destroyOnAnyCollision: 0
 --- !u!114 &885456356493774885
 MonoBehaviour:
   m_ObjectHideFlags: 0

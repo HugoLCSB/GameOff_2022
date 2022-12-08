@@ -2,13 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Rendering.Universal;
 
 public class CharacterMovement : MonoBehaviour
 {
     [SerializeField] private CharacterController2D controller;
     [SerializeField] private Transform firePoint;
     [SerializeField] private GameObject bullet;
+    [SerializeField] private GameObject explosion;
     [SerializeField] private GameObject arm;
+    [SerializeField] private Light2D l1;
+    [SerializeField] private Light2D l2;
+    [SerializeField] private Color c1;
+    [SerializeField] private Color c2;
     //[SerializeField] private string deathLayerName;//for falling or spikes or things that trigger death
     [SerializeField] private float runSpeed = 30;   //speed of the player
     [SerializeField] private float jumpDelay = 0.4f;    //cool down time between jumps
@@ -17,10 +23,18 @@ public class CharacterMovement : MonoBehaviour
     [SerializeField] private float fallDownForce = 5;   //Force applied when player clicks down, to reach the floor quicker
     [SerializeField] private float fireRate = 2.8f; //cannon fire rate
     [SerializeField] private float rateMultiplier = 0.3f;  //percentage of the fireRate to add each shot
-    [SerializeField] private float rateCap = 15; //Maximum allowed fireRate 
-    [SerializeField] private float overHeatingAmount = 2.8f; //number of shots before weapon overHeats
-    [SerializeField] private float overHeatingTime = 3f; //number of shots before weapon overHeats
-    [SerializeField] private bool canJump = true;   //whether or not the player can jump
+    [SerializeField] private float rateCap = 15; //Maximum allowed fireRate
+
+
+    [SerializeField] private float overHeatAmount = 5;   //total overheating pool
+    [SerializeField] private float heatUpRate = 2.8f; //every cannon shot increases it by this much 
+    [SerializeField] private float coolDownAmount = 0.3f;  //every tick without shooting decreases it by this much
+    [SerializeField] private float coolDownRate = 0.3f;  //time between cooldown ticks
+    [SerializeField] private float coolDownMultiplier = 0.3f;
+
+
+    [SerializeField] private bool canJump = false;   //whether or not the player can jump
+    [SerializeField] private bool hasAirResistance = false;   //whether or not to apply air resistance along with the recoil
 
     private float horizontalMove;
     private float variableFireRate;
@@ -28,6 +42,9 @@ public class CharacterMovement : MonoBehaviour
     private bool isJumping = false;
     private bool isShooting = false;
     private bool isOverHeating = false;
+    public float currHeatAmount = 0;
+    private float lastTickTime = 0;
+    private Coroutine currShootRoutine;
     private bool grounded = false;
     private float localScaleX;
     private int counter;
@@ -47,6 +64,8 @@ public class CharacterMovement : MonoBehaviour
         }
 
         variableFireRate = fireRate;
+        counter = 0;
+        currHeatAmount = overHeatAmount;
         localScaleX = transform.localScale.x;
 
         //Add a listener to the new Event. Calls action method when invoked
@@ -85,6 +104,49 @@ public class CharacterMovement : MonoBehaviour
         jump = false;
 
         anim.SetFloat("movementY", rb.velocity.y);
+
+        //overHeating
+        if(currHeatAmount <= 0 && !isOverHeating){
+            isOverHeating = true;
+
+            //overheat sound and particles (unity Event)
+
+            currHeatAmount = 0;
+            if(arm.TryGetComponent<Animator>(out Animator armAnim)){
+                armAnim.SetTrigger("overHeat");
+            }
+            l1.color = c2;
+            l2.color = c2;
+        }
+
+        if((Time.fixedTime > (lastTickTime + 1/coolDownRate)) && (currHeatAmount < overHeatAmount)){
+            lastTickTime = Time.fixedTime;
+            currHeatAmount += coolDownAmount;
+            if(!isOverHeating){
+                l1.color = new Color(1.000f, l1.color.g + (c1.g * (coolDownAmount/overHeatAmount)), 0f, 1f);
+                l2.color = l1.color;
+            }
+            if(currHeatAmount >= overHeatAmount){ 
+                currHeatAmount = overHeatAmount;    //reset
+                if(isOverHeating){
+                    isOverHeating = false;
+                    if(arm.TryGetComponent<Animator>(out Animator armAnim)){
+                        armAnim.SetTrigger("idle");
+                    }
+                    /*Light2D[] cannonLights = arm.GetComponentsInChildren<Light2D>();
+                    if(cannonLights.Length > 0){
+                        Debug.Log("got a light");
+                        for(int i = 0; i < cannonLights.Length; i++){
+                            Debug.Log(cannonLights[i].color);
+                            cannonLights[i].color = Color.yellow;
+                            Debug.Log(cannonLights[i].color);
+                        }
+                    }*/
+                    l1.color = c1;
+                    l2.color = c1;
+                }
+            }
+        }
     }
 
     void Grounded()
@@ -110,33 +172,18 @@ public class CharacterMovement : MonoBehaviour
         }
 
         //CHECK FIRE
-        if(!isShooting){
-           if(Input.GetButton("Fire1")){
-                Shoot();
 
-                counter++;
-                if(counter < overHeatingAmount){
-                    StartCoroutine(waitShoot(1/variableFireRate));
-                }
-                else{   //overheat
-                    StartCoroutine(OverHeating(overHeatingTime));
-
-                    if(arm.TryGetComponent<Animator>(out Animator armAnim)){
-                        armAnim.SetTrigger("overHeat");
-                    }
-                }
-                
-
-                //adding to the fire rate progressively if the fire button is held
-                if((variableFireRate > 0) && (variableFireRate < rateCap)){
-                    variableFireRate += variableFireRate * rateMultiplier;
-                }
-            }
+        if(Input.GetButtonDown("Fire1") && !isOverHeating){
+            Shoot();
+            isShooting = true;
+            currShootRoutine = StartCoroutine(waitShoot(1/variableFireRate));
         }
-        if(Input.GetButtonUp("Fire1") && variableFireRate != 0){
-            variableFireRate = fireRate;    //reset fireRate
+        if(Input.GetButtonUp("Fire1")){
+            StopCoroutine(currShootRoutine);
+            isShooting = false;
+            variableFireRate = fireRate;
             counter = 0;
-        }//Debug.Log(variableFireRate);
+        }
 
         //CLICK DOWN = FALLING FASTER
         if(Input.GetAxisRaw("Vertical") < 0 && fallDownForce > 0){
@@ -168,6 +215,12 @@ public class CharacterMovement : MonoBehaviour
     }
 
     private void Shoot(){
+        //OverHeating
+        currHeatAmount -= heatUpRate;
+        l1.color = new Color(1.000f, l1.color.g - (c1.g * (heatUpRate/overHeatAmount)), 0f, 1f);
+        l2.color = l1.color;
+        Debug.Log(l1.color.g);
+
         anim.SetTrigger("shoot");
         if(arm.TryGetComponent<Animator>(out Animator armAnim)){
             armAnim.SetTrigger("shoot");
@@ -197,23 +250,42 @@ public class CharacterMovement : MonoBehaviour
            rb.AddForce(recoilDir * cannonRecoil, ForceMode2D.Impulse);
         }
 
+        if(hasAirResistance){
+            //air resistance force
+            Vector2 airResistance = -rb.velocity.normalized;
+            airResistance.x *= Mathf.Pow(rb.velocity.x, 2)/2; airResistance.y *= Mathf.Pow(rb.velocity.y, 2)/2;
+            rb.AddForce(airResistance);
+        }
+
         //creating bullets at the firePoint and adding velocity to them
+        GameObject explosionInstane =  Instantiate(explosion, firePoint.position, transform.rotation);
+        if(explosionInstane.TryGetComponent<Light2D>(out Light2D explosionLight)){
+            float greenValue = (explosionLight.color.g - c1.g) + ((l2.color.g) - (c1.g * (heatUpRate/overHeatAmount)));
+            if(greenValue < 0){
+                greenValue = 0;
+            }
+            explosionLight.color = new Color(1.000f, greenValue, 0f, 1f);
+        }
+
         GameObject shotInstance =  Instantiate(bullet, firePoint.position, transform.rotation);
         shotInstance.GetComponent<Rigidbody2D>().AddForce(new Vector2(mouseOnScreen.x - positionOnScreen.x,
             mouseOnScreen.y - positionOnScreen.y).normalized * cannonPower);
     }
-    private IEnumerator waitShoot(float time){
-        isShooting = true;
-        yield return new WaitForSeconds(time);
-        isShooting = false;
-    }
 
-    private IEnumerator OverHeating(float time){
-        isOverHeating = true;
-        isShooting = true;
+    private IEnumerator waitShoot(float time){
         yield return new WaitForSeconds(time);
-        isShooting = false;
-        isOverHeating = false;
+        if(isShooting){
+            if(!isOverHeating){
+                Shoot();
+
+                //adding to the fire rate progressively if the fire button is held
+                if((variableFireRate > 0) && (variableFireRate < rateCap)){
+                    variableFireRate += variableFireRate * rateMultiplier;
+                }
+
+                currShootRoutine = StartCoroutine(waitShoot(1/variableFireRate));
+            }
+        }
     }
 
     private void PlaySound(string soundName){
@@ -233,5 +305,9 @@ public class CharacterMovement : MonoBehaviour
         }else{ isGamePaused = false; }*/
 
         isGamePaused = b;
+    }
+
+    public float GetOverHeat(){
+        return currHeatAmount;
     }
 }
