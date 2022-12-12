@@ -37,7 +37,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - overlay
   m_SortingLayers:
   - name: background
     uniqueID: 2240884933
