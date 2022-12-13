@@ -2,10 +2,10 @@ Shader "Unlit/ScanLines"
 {
     Properties
     {
-        //_MainTex ("Texture", 2D) = "white" {}
+        [NoScaleOffset] _MainTex ("Render Image", 2D) = "black" {}
         _Color ("Color", Color) = (1,1,1,1)
-        _lineStart ("Line Start", Range(0,1)) = 1
-        _lineEnd ("Line End", Range(0,1)) = 0 
+        _LineThick ("Line Thickness", Range(0.8,1)) = 0.99999
+        _SpeedMult ("Speed Multiplier", float) = 5
     }
     SubShader
     {
@@ -13,7 +13,9 @@ Shader "Unlit/ScanLines"
 
         Pass
         {
-            Blend One One
+            //Blend One One //additive
+            Blend DstColor Zero  //multiplicative
+            ZWrite Off
 
             CGPROGRAM
             #pragma vertex vert
@@ -21,9 +23,10 @@ Shader "Unlit/ScanLines"
 
             #include "UnityCG.cginc"
 
+            sampler2D _MainTex;
             float4 _Color;
-            float _lineStart;
-            float _lineEnd;
+            float _LineThick;
+            float _SpeedMult;
 
             struct appdata
             {
@@ -36,8 +39,6 @@ Shader "Unlit/ScanLines"
                 float2 uv : TEXCOORD0;
                 float4 vertex : SV_POSITION;
             };
-
-            
 
             v2f vert (appdata v)
             {
@@ -53,24 +54,24 @@ Shader "Unlit/ScanLines"
 
             fixed4 frag (v2f i) : SV_Target
             {
-                //return _Color;
-                //float4 outColor = lerp(float4(0,0,0,1), _Color, i.uv.y);
-
-                float linePos = cos((i.uv.y) +(_Time.w * 5));
-                //float t = saturate(InverseLerp(_lineStart, _lineEnd, i.uv.y ) * 0.5 + 0.5) ;
-                //float t = frac((i.uv.y -1) + _Time.w) * -1 +1;
-                
+                float linePos = cos((i.uv.y) +(_Time.w * _SpeedMult));
                 float4 t;
-                if(linePos >= 0.99999){
-                    t = _Color;
+                if(linePos >= _LineThick){
+                    return  tex2D( _MainTex, i.uv ) + _Color;
+                    //return tex2D( _MainTex, i.uv );
+                }
+                else if((linePos <= -_LineThick) && linePos < 0){
+                    return tex2D( _MainTex, i.uv ) + _Color;
+                    //return tex2D( _MainTex, i.uv );
                 }
                 else{
-                    t = (0,0,0,0);
+                    return tex2D( _MainTex, i.uv );
                 }
-                return t;
+                //return t;
 
-
-                //return outColor;
+                //float4 tex = tex2D( _MainTex, i.uv );
+                //return _Color;
+                //return tex + t;
             }
             ENDCG
         }
