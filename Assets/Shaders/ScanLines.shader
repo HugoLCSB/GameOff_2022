@@ -56,13 +56,16 @@ Shader "Unlit/ScanLines"
             {
                 float linePos = cos((i.uv.y) +(_Time.w * _SpeedMult));
                 float4 t;
+
+                //return linePos;
                 if(linePos >= _LineThick){
                     return  tex2D( _MainTex, i.uv ) + _Color;
-                    //return tex2D( _MainTex, i.uv );
                 }
+                /*if((linePos <= (1 -_LineThick+0.1)) && (linePos >= -(1 -_LineThick+0.1))){
+                    return  tex2D( _MainTex, i.uv ) + (.1,0,0,1);
+                }*/
                 else if((linePos <= -_LineThick) && linePos < 0){
                     return tex2D( _MainTex, i.uv ) + _Color;
-                    //return tex2D( _MainTex, i.uv );
                 }
                 else{
                     return tex2D( _MainTex, i.uv );
