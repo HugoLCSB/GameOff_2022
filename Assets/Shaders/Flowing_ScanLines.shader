@@ -1,8 +1,9 @@
-Shader "Unlit/ScanLines"
+Shader "Unlit/ScanLines/Flowing"
 {
     Properties
     {
         [NoScaleOffset] _MainTex ("Render Image", 2D) = "black" {}
+        _UnscaledTime ("Unscaled Time", float) = 0
         _Color ("Color", Color) = (1,1,1,1)
         _LineThick ("Line Thickness", Range(0.8,1)) = 0.99999
         _SpeedMult ("Speed Multiplier", float) = 5
@@ -27,6 +28,7 @@ Shader "Unlit/ScanLines"
             float4 _Color;
             float _LineThick;
             float _SpeedMult;
+            float _UnscaledTime;
 
             struct appdata
             {
@@ -54,7 +56,7 @@ Shader "Unlit/ScanLines"
 
             fixed4 frag (v2f i) : SV_Target
             {
-                float linePos = cos((i.uv.y) +(_Time.w * _SpeedMult));
+                float linePos = cos((i.uv.y) +(/*_Time.w*/_UnscaledTime * _SpeedMult));
                 float4 t;
 
                 //return linePos;
