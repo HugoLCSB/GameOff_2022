@@ -11,10 +11,12 @@ public class RotateToMousePos : MonoBehaviour
 
     private bool isPaused = false;
 
+    private Vector3 prevMousePos;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        prevMousePos = (Vector2)Input.mousePosition;
     }
 
     // Update is called once per frame
@@ -24,6 +26,7 @@ public class RotateToMousePos : MonoBehaviour
             Rotate();
         }
 
+        prevMousePos = (Vector2)Input.mousePosition;
         /*if(objectsToRotate.Length != 0){
             for(int i = 0; i < objectsToRotate.Length; i++){
                 Rotate(objectsToRotate[i]);
@@ -44,6 +47,18 @@ public class RotateToMousePos : MonoBehaviour
 
         /*float*/ mouseAngle = AngleBetweenTwoPoints(positionOnScreen, mouseOnScreen);
 
+        CheckLimits(mouseAngle);
+    }
+
+    private void RotateDelta(){
+        Vector3 mouseDelta = prevMousePos - Input.mousePosition;
+             
+        if (mouseDelta.sqrMagnitude > .5f)
+        {
+            mouseAngle = Mathf.Atan2 (mouseDelta.y, mouseDelta.x) * Mathf.Rad2Deg;
+        }
+        
+        Debug.Log(mouseAngle);
         CheckLimits(mouseAngle);
     }
 
