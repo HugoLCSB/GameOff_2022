@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1973679040745114991}
   - component: {fileID: 1973679040745114988}
   m_Layer: 0
-  m_Name: CRT_Divided
+  m_Name: CRT_Lines
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
