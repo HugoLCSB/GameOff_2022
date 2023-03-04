@@ -68,7 +68,7 @@ public class FlyingEnemy : Enemy
         transform.rotation =  Quaternion.Euler (new Vector3(0f,0f,0f));
 
         //setting up continuos aggro from this point on
-        if(isAggro){ hasAggroed = true; }
+        if(a_isAggro){ hasAggroed = true; }
 
         //change animation
         anim.SetTrigger("go" + nextState.ToString());
@@ -87,15 +87,7 @@ public class FlyingEnemy : Enemy
         //move
         rb.velocity = new Vector2(nextDir.x * idleWalkSpeed, rb.velocity.y);
 
-        //check for transition to next state
-            if(keepAggro && hasAggroed || aggroWhenHit && isAggro){
-                isAggro = true;
-            }
-            else if(aggroOnBothSides){
-                if(CheckAggro(Vector2.right, aggroDistance, target)){ isAggro = true; }
-                else{ isAggro = CheckAggro(Vector2.left, aggroDistance, target); }
-            }
-            else{ isAggro = CheckAggro(nextDir, aggroDistance, target);}    //only on the side he's looking/ walking towards
+        CheckAggro(keepAggro, aggroWhenHit, aggroOnBothSides, hasAggroed, aggroDistance, nextDir, target);
     }
     
     protected override void DoAttack(){
@@ -149,21 +141,12 @@ public class FlyingEnemy : Enemy
 
     protected override void DoStunned(){
         if(Time.time > nextTime){
-            //check for transition to next state
-            if(keepAggro && hasAggroed || aggroWhenHit && isAggro){
-                isAggro = true;
-            }
-            else if(aggroOnBothSides){
-                if(CheckAggro(Vector2.right, aggroDistance, target)){ isAggro = true; }
-                else{ isAggro = CheckAggro(Vector2.left, aggroDistance, target); }
-            }
-            else{ isAggro = CheckAggro(nextDir, aggroDistance, target);}    //only on the side he's looking/ walking towards
-
-            isStunned = false;
+            a_isStunned = false;
+             CheckAggro(keepAggro, aggroWhenHit, aggroOnBothSides, hasAggroed, aggroDistance, nextDir, target);
         }
     }
 
-    protected override void OnCollisionEnter2D(Collision2D other) {
+    protected void OnCollisionEnter2D(Collision2D other) {
         if(other.gameObject.layer != LayerMask.NameToLayer("ground")){
             if(enemyState == EnemyState.Idle){
                 //hit some obstacle while on Idle mode
@@ -185,9 +168,9 @@ public class FlyingEnemy : Enemy
                 Debug.Log(LayerMask.LayerToName(other.gameObject.layer));
             
                 rb.velocity = new Vector2(0,rb.velocity.y);
-                isStunned = true;
+                a_isStunned = true;
 
-                if(aggroWhenHit){ isAggro = true; }
+                if(aggroWhenHit){ a_isAggro = true; }
 
                 //reset timer
                 nextTime = Time.time + attackDelay;

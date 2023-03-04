@@ -12,7 +12,7 @@ public class RollingEnemy : Enemy
     [SerializeField] private bool aggroOnBothSides = false;
     [SerializeField] private bool aggroWhenHit = false;
     [SerializeField] private bool keepAggro = false;
-    [SerializeField] private bool canDoDamageWhileStopped = true;
+    [SerializeField] private bool damageOnTouch = true; //when not doing attack, if touched deals damage
     [SerializeField] private bool immuneWhileAttacking = false;
 
     [SerializeField] private GameObject target;
@@ -35,7 +35,7 @@ public class RollingEnemy : Enemy
         if(immuneWhileAttacking){
             health = GetComponent<Health>();
         }
-        if(!canDoDamageWhileStopped){
+        if(!damageOnTouch){
             damage = GetComponent<DoDamage>();
             damage.isOn(false);
         }
@@ -55,7 +55,7 @@ public class RollingEnemy : Enemy
             }
             else{ health.Immunity(true); } //when attack
         }
-        if(!canDoDamageWhileStopped){
+        if(!damageOnTouch){
             if(nextState == EnemyState.Idle || nextState == EnemyState.Stunned){
                    damage.isOn(false);
             }
@@ -63,7 +63,7 @@ public class RollingEnemy : Enemy
         }
 
         //setting up continuos aggro from this point on
-        if(isAggro){ hasAggroed = true; }
+        if(a_isAggro){ hasAggroed = true; }
 
         //change animation
         anim.SetTrigger("go" + nextState.ToString());
@@ -85,15 +85,7 @@ public class RollingEnemy : Enemy
         if(nextDir.x != 0){ anim.SetBool("isMoving", true); }
         else{ anim.SetBool("isMoving", false); }
 
-        //check for transition to next state
-            if(keepAggro && hasAggroed || aggroWhenHit && isAggro){
-                isAggro = true;
-            }
-            else if(aggroOnBothSides){
-                if(CheckAggro(Vector2.right, aggroDistance, target)){ isAggro = true; }
-                else{ isAggro = CheckAggro(Vector2.left, aggroDistance, target); }
-            }
-            else{ isAggro = CheckAggro(nextDir, aggroDistance, target);}    //only on the side he's looking/ walking towards
+        CheckAggro(keepAggro, aggroWhenHit, aggroOnBothSides, hasAggroed, aggroDistance, nextDir, target);
     }
 
     protected override void DoAttack(){
@@ -110,21 +102,12 @@ public class RollingEnemy : Enemy
 
     protected override void DoStunned(){
         if(Time.time > nextTime){
-            //check for transition to next state
-            if(keepAggro && hasAggroed || aggroWhenHit && isAggro){
-                isAggro = true;
-            }
-            else if(aggroOnBothSides){
-                if(CheckAggro(Vector2.right, aggroDistance, target)){ isAggro = true; }
-                else{ isAggro = CheckAggro(Vector2.left, aggroDistance, target); }
-            }
-            else{ isAggro = CheckAggro(nextDir, aggroDistance, target);}    //only on the side he's looking/ walking towards
-
-            isStunned = false;
+            a_isStunned = false;
+            CheckAggro(keepAggro, aggroWhenHit, aggroOnBothSides, hasAggroed, aggroDistance, nextDir, target);
         }
     }
 
-    protected override void OnCollisionEnter2D(Collision2D other) {
+    protected void OnCollisionEnter2D(Collision2D other) {
         if(other.gameObject.layer != LayerMask.NameToLayer("ground")){
             if(enemyState == EnemyState.Idle){
                 //hit some obstacle while on Idle mode
@@ -136,10 +119,10 @@ public class RollingEnemy : Enemy
             }
 
             if(other.gameObject.layer == LayerMask.NameToLayer("projectiles")){
-                if(aggroWhenHit){ isAggro = true; }
+                if(aggroWhenHit){ a_isAggro = true; }
 
                 if(enemyState != EnemyState.Attack){
-                    isStunned = true;
+                    a_isStunned = true;
 
                     //reset timer
                     nextTime = Time.time + attackDelay;
@@ -151,7 +134,7 @@ public class RollingEnemy : Enemy
                     Debug.Log(LayerMask.LayerToName(other.gameObject.layer));
                 
                     rb.velocity = new Vector2(0,rb.velocity.y);
-                    isStunned = true;
+                    a_isStunned = true;
 
                     //reset timer
                     nextTime = Time.time + attackDelay;

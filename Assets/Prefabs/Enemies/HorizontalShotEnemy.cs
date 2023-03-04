@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LaserEnemy : Enemy
+public class HorizontalShotEnemy : Enemy
 {
     [SerializeField] private float idleTime = 3;
     [SerializeField] private float idleWalkSpeed = 5;
@@ -56,7 +56,7 @@ public class LaserEnemy : Enemy
             }
         }
         else{   //attack
-            flip.SetTarget(target.transform);   //deselecting target so he flips towards him
+            flip.SetTarget(target.transform);   //selecting target so he flips towards him
 
             if(immuneWhileAttacking && health != null){ 
                 health.Immunity(true);
@@ -64,7 +64,7 @@ public class LaserEnemy : Enemy
         }
 
         //setting up continuos aggro from this point on
-        if(isAggro){ hasAggroed = true; }
+        if(a_isAggro){ hasAggroed = true; }
 
         //change animation
         anim.SetTrigger("go" + nextState.ToString());
@@ -86,15 +86,7 @@ public class LaserEnemy : Enemy
         if(nextDir.x != 0){ anim.SetBool("isMoving", true); }
         else{ anim.SetBool("isMoving", false); }
 
-        //check for transition to next state
-        if(keepAggro && hasAggroed || aggroWhenHit && isAggro){
-            isAggro = true;
-        }
-        else if(aggroOnBothSides){
-            if(CheckAggro(Vector2.right, aggroDistance, target)){ isAggro = true; }
-            else{ isAggro = CheckAggro(Vector2.left, aggroDistance, target); }
-        }
-        else{ isAggro = CheckAggro(nextDir, aggroDistance, target);}    //only on the side he's looking/ walking towards
+        CheckAggro(keepAggro, aggroWhenHit, aggroOnBothSides, hasAggroed, aggroDistance, nextDir, target);
     }
 
     protected override void DoAttack(){
@@ -103,30 +95,22 @@ public class LaserEnemy : Enemy
 
             //Recoil (?)
 
-            //creating bullets at the firePoint and adding velocity to them
             GameObject shotInstance =  Instantiate(laser, firePoint.position, Quaternion.identity);
-            
-            Vector2 newDir = new 
-            Vector2(target.transform.position.x - transform.position.x, 0).normalized;
 
-            if(newDir.x < 0){
-                // Multiply the player's x local scale by -1.
-                Vector3 theScale = shotInstance.transform.localScale;
-                theScale.x *= -1;
-                shotInstance.transform.localScale = theScale;
-            }
-
-            shotInstance.GetComponent<BulletHandler>().setDir(newDir);
+            shotInstance.transform.localScale = this.transform.localScale;
+            shotInstance.GetComponent<BulletHandler>().setDir(new 
+                Vector2(target.transform.position.x - transform.position.x, 0).normalized);
 
             nextTime = Time.time + attackDelay;
         }
 
-        //move closer to player
-        if(Vector2.Distance(target.transform.position, transform.position) > attackDistance){
+        //move closer to, or away from player
+        float dist = Vector2.Distance(target.transform.position, transform.position);
+        if(dist > attackDistance){
             nextDir = (target.transform.position - transform.position).normalized;
             rb.velocity = new Vector2(nextDir.x * attackSpeed, rb.velocity.y);
         }
-        else if(Vector2.Distance(target.transform.position, transform.position) < attackDistance -2){
+        else if(dist < attackDistance -2){
             nextDir = (transform.position - target.transform.position).normalized;
             rb.velocity = new Vector2(nextDir.x * attackSpeed, rb.velocity.y);
         }
@@ -137,21 +121,12 @@ public class LaserEnemy : Enemy
 
     protected override void DoStunned(){
         if(Time.time > nextTime){
-            //check for transition to next state
-            if(keepAggro && hasAggroed || aggroWhenHit && isAggro){
-                isAggro = true;
-            }
-            else if(aggroOnBothSides){
-                if(CheckAggro(Vector2.right, aggroDistance, target)){ isAggro = true; }
-                else{ isAggro = CheckAggro(Vector2.left, aggroDistance, target); }
-            }
-            else{ isAggro = CheckAggro(nextDir, aggroDistance, target);}    //only on the side he's looking/ walking towards
-
-            isStunned = false;
+            a_isStunned = false;
+            CheckAggro(keepAggro, aggroWhenHit, aggroOnBothSides, hasAggroed, aggroDistance, nextDir, target);
         }
     }
 
-     protected override void OnCollisionEnter2D(Collision2D other) {
+    protected void OnCollisionEnter2D(Collision2D other) {
         if(other.gameObject.layer != LayerMask.NameToLayer("ground")){
             if(other.transform.position.x > transform.position.x){
                 nextDir = Vector2.left;
@@ -160,13 +135,8 @@ public class LaserEnemy : Enemy
 
             
             if(other.gameObject.layer == LayerMask.NameToLayer("projectiles")){
-                //hit some obstacle while on Attack mode
-                //Debug.Log(LayerMask.LayerToName(other.gameObject.layer));
-
-                if(aggroWhenHit){ isAggro = true; }
-            
-                //rb.velocity = new Vector2(0,rb.velocity.y);
-                isStunned = true;
+                if(aggroWhenHit){ a_isAggro = true; }
+                a_isStunned = true;
 
                 //reset timer
                 nextTime = Time.time + attackDelay;

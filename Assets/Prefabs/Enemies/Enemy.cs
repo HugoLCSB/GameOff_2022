@@ -4,9 +4,15 @@ using UnityEngine;
 
 public abstract class Enemy : MonoBehaviour
 {   
+    protected enum EnemyState{
+        Idle,
+        Attack,
+        Stunned
+    }
+
     protected EnemyState enemyState = EnemyState.Idle;
-    protected bool isAggro = false;
-    protected bool isStunned = false;
+    protected bool a_isAggro = false;
+    protected bool a_isStunned = false;
 
 
     // Update is called once per frame
@@ -15,30 +21,24 @@ public abstract class Enemy : MonoBehaviour
         switch(enemyState){
             case EnemyState.Idle:
                 DoIdle();
-                if(isStunned){ enemyState = Transition(EnemyState.Stunned); }
-                else if(isAggro){ enemyState = Transition(EnemyState.Attack); }
+                if(a_isStunned){ enemyState = Transition(EnemyState.Stunned); }
+                else if(a_isAggro){ enemyState = Transition(EnemyState.Attack); }
                 break;
 
             case EnemyState.Attack:
                 DoAttack();
-                if(isStunned){ enemyState = Transition(EnemyState.Stunned);  }
-                else if(!isAggro){ enemyState = Transition(EnemyState.Idle); }
+                if(a_isStunned){ enemyState = Transition(EnemyState.Stunned);  }
+                else if(!a_isAggro){ enemyState = Transition(EnemyState.Idle); }
                 break;
 
                 case EnemyState.Stunned:
                 DoStunned();
-                if(!isStunned){
-                    if(!isAggro){ enemyState = Transition(EnemyState.Idle); }
+                if(!a_isStunned){
+                    if(!a_isAggro){ enemyState = Transition(EnemyState.Idle); }
                     else{ enemyState = Transition(EnemyState.Attack); }
                 }
                 break;
         }
-    }
-
-    protected enum EnemyState{
-        Idle,
-        Attack,
-        Stunned
     }
 
     protected abstract EnemyState Transition(EnemyState nextState);
@@ -75,8 +75,22 @@ public abstract class Enemy : MonoBehaviour
         return nextDir;
     }
 
-    //lounches a Raycast in search of a collider
-    protected virtual bool CheckAggro(Vector2 dir, float distance, GameObject target){  
+    //Considering all the aggro parameters check if its true or false
+    protected void CheckAggro(bool keepAggro, bool aggroWhenHit, bool aggroOnBothSides,
+                                bool hasAggroed, float aggroDistance, Vector2 nextDir,   GameObject target){
+
+        if(keepAggro && hasAggroed || aggroWhenHit && a_isAggro){
+            a_isAggro = true;
+        }
+        else if(aggroOnBothSides){
+            if(Check(Vector2.right, aggroDistance, target)){ a_isAggro = true; }
+            else{ a_isAggro = Check(Vector2.left, aggroDistance, target); }
+        }
+        else{ a_isAggro = Check(nextDir, aggroDistance, target);}    //only on the side he's looking/ walking towards
+    }
+
+    //lounches a Raycast in search of a target collider
+    protected virtual bool Check(Vector2 dir, float distance, GameObject target){  
         RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, distance, (1 << 7));
         if(hit && hit.transform.gameObject == target){ return true; }
         else{ return false; }
@@ -90,6 +104,4 @@ public abstract class Enemy : MonoBehaviour
         Debug.Log("Player Killed " + this.gameObject.name);
         Destroy(gameObject);
     }
-
-    protected abstract void OnCollisionEnter2D(Collision2D other);
 }
